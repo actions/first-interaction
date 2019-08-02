@@ -5,9 +5,9 @@ const fs = require('fs');
 async function run() {
   try {
     // Get client and context
-    console.log(fs.readFileSync(process.env['GITHUB_EVENT_PATH'], { encoding: 'utf8' }));
     const client = new github.GitHub(core.getInput('repoToken', { required: true }));
     const context = github.context;
+    console.log(fs.readFileSync(process.env['GITHUB_EVENT_PATH'], { encoding: 'utf8' }));
 
     // Do nothing if its not a pr or issue
     const isIssue = !!context.payload.issue;
@@ -55,6 +55,7 @@ async function isFirstIssue(client, owner, repo, sender): Promise<boolean> {
 
 // No way to filter pulls by creator
 async function isFirstPull(client, owner, repo, sender, page = 1): Promise<boolean> {
+  console.log('Checking...');
   const {status, data: pulls} = await client.pulls.list({owner: owner, repo: repo, per_page: 100, page: page, state: 'all'});
 
   if (status !== 200) {
