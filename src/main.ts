@@ -9,6 +9,11 @@ async function run() {
     const context = github.context;
     console.log(fs.readFileSync(process.env['GITHUB_EVENT_PATH'], { encoding: 'utf8' }));
 
+    if (context.payload.action !== 'opened') {
+      console.log('Nothing was opened');
+      return;
+    }
+
     // Do nothing if its not a pr or issue
     const isIssue = !!context.payload.issue;
     if (!isIssue && !context.payload.pull_request) {
