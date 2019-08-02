@@ -4,15 +4,14 @@ const github = require('@actions/github');
 async function run() {
   try {
     // Get client and context
-    console.log('Getting a gitub client and context');
     const client = new github.GitHub(core.getInput('repoToken', { required: true }));
     const context = github.context;
 
     // Do nothing if its not a pr or issue
-    console.log('Checking if its a PR, issue, or something else, context payload: ' + !!context.payload.issue);
     const isIssue = !!context.payload.issue;
     if (!isIssue && !context.payload.pullRequest) {
-      core.setNeutral('Not a pull request or issue');
+      console.log('Not a pull request or issue');
+      core.setNeutral();
       return;
     }
 
@@ -21,15 +20,16 @@ async function run() {
     const sender = context.payload.sender.login;
     const firstContribution = isIssue ? await isFirstIssue(client, context, isIssue, sender) : await isFirstPull(client, context, isIssue, sender);
     if (!firstContribution) {
-      core.setNeutral('Not the users first contribution');
+      console.log('Not the users first contribution');
+      core.setNeutral();
       return;
     }
     
     // Do nothing if no message set for this type of contribution
-    console.log('Getting the right message for this type of contribution');
     const message = isIssue ? core.getInput('issueMessage') : core.getInput('prMessage');
     if (!message) {
-      core.setNeutral('No message provided for this type of contribution');
+      console.log('No message provided for this type of contribution')
+      core.setNeutral();
     }
 
     // Add a comment to the appropriate place
