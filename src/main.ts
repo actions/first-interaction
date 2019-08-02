@@ -11,7 +11,7 @@ async function run() {
 
     // Do nothing if its not a pr or issue
     const isIssue = !!context.payload.issue;
-    if (!isIssue && !context.payload.pullRequest) {
+    if (!isIssue && !context.payload.pull_request) {
       console.log('Not a pull request or issue');
       return;
     }
