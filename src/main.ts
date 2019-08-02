@@ -20,7 +20,7 @@ async function run() {
     console.log('Checking if its the users first contribution');
     const sender = context.payload.sender.login;
     const issue = context.issue;
-    const firstContribution = isIssue ? await isFirstIssue(client, issue.owner, issue.repo, sender) : await isFirstPull(client, issue.owner, issue.repo, sender);
+    const firstContribution = isIssue ? await isFirstIssue(client, issue.owner, issue.repo, issue.number, sender) : await isFirstPull(client, issue.owner, issue.repo, issue.number, sender);
     if (!firstContribution) {
       console.log('Not the users first contribution');
       return;
@@ -49,18 +49,29 @@ async function run() {
   }
 }
 
-async function isFirstIssue(client, owner, repo, sender): Promise<boolean> {
+async function isFirstIssue(client, owner, repo, sender, number): Promise<boolean> {
   const {status, data: issues} = await client.issues.listForRepo({owner: owner, repo: repo, creator: sender, state: 'all'});
 
   if (status !== 200) {
     throw new Error(`Received API status code ${status}`);
   }
 
-  return issues.length === 0;
+  if (issues.length === 0) {
+    return true;
+  }
+
+  for (const issue of issues) {
+    const issueNumber = issue.number;
+    if (issueNumber < number) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // No way to filter pulls by creator
-async function isFirstPull(client, owner, repo, sender, page = 1): Promise<boolean> {
+async function isFirstPull(client, owner, repo, sender, number, page = 1): Promise<boolean> {
   console.log('Checking...');
   const {status, data: pulls} = await client.pulls.list({owner: owner, repo: repo, per_page: 100, page: page, state: 'all'});
 
@@ -74,7 +85,8 @@ async function isFirstPull(client, owner, repo, sender, page = 1): Promise<boole
 
   for (const pull of pulls) {
     const login = pull.user.login;
-    if (login === sender) {
+    const pullNumber = pull.number;
+    if (login === sender && pullNumber < number) {
       return false;
     }
   }
