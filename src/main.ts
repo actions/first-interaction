@@ -19,7 +19,8 @@ async function run() {
     // Do nothing if its not their first contribution
     console.log('Checking if its the users first contribution');
     const sender = context.payload.sender.login;
-    const firstContribution = isIssue ? await isFirstIssue(client, context, isIssue, sender) : await isFirstPull(client, context, isIssue, sender);
+    const repo = context.repo;
+    const firstContribution = isIssue ? await isFirstIssue(client, repo.owner, repo.repo, sender) : await isFirstPull(client, repo.owner, repo.repo, sender);
     if (!firstContribution) {
       console.log('Not the users first contribution');
       return;
