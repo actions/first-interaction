@@ -19,9 +19,10 @@ async function run() {
     // Do nothing if its not their first contribution
     console.log('Checking if its the users first contribution');
     const sender = context.payload.sender.login;
-    const repo = context.repo;
-    const firstContribution = isIssue ? await isFirstIssue(client, repo.owner, repo.repo, sender) : await isFirstPull(client, repo.owner, repo.repo, sender);
-    if (firstContribution) {
+    const issue = context.issue;
+    const firstContribution = isIssue ? await isFirstIssue(client, issue.owner, issue.repo, sender) : await isFirstPull(client, issue.owner, issue.repo, sender);
+    // if (!firstContribution) {
+    if (!firstContribution) {
       console.log('Not the users first contribution');
       return;
     }
@@ -35,8 +36,13 @@ async function run() {
 
     // Add a comment to the appropriate place
     console.log('Adding a comment in the issue or PR');
-    const issue = context.issue;
-    await client.issues.createComment(issue.owner, issue.repo, issue.number, message);
+    if (isIssue) {
+      await client.issues.createComment(issue.owner, issue.repo, issue.number, message);
+    }
+    else {
+      await client.pulls.createReview({ owner: issue.owner, repo: issue.repo, pull_number: issue.number, body: message, event: 'COMMENT' });
+    }
+    
 
   } catch (error) {
     core.setFailed(error.message);
