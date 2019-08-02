@@ -1,9 +1,11 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const fs = require('fs');
 
 async function run() {
   try {
     // Get client and context
+    console.log(fs.readFileSync(process.env['GITHUB_EVENT_PATH'], { encoding: 'utf8' }));
     const client = new github.GitHub(core.getInput('repoToken', { required: true }));
     const context = github.context;
 
@@ -26,7 +28,8 @@ async function run() {
     // Do nothing if no message set for this type of contribution
     const message = isIssue ? core.getInput('issueMessage') : core.getInput('prMessage');
     if (!message) {
-      console.log('No message provided for this type of contribution')
+      console.log('No message provided for this type of contribution');
+      return;
     }
 
     // Add a comment to the appropriate place
