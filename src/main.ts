@@ -9,7 +9,7 @@ async function run() {
     const context = github.context;
 
     if (context.payload.action !== 'opened') {
-      console.log('Nothing was opened, payload action was: ' + context.payload.action);
+      console.log('Nothing was opened');
       return;
     }
 
@@ -66,6 +66,7 @@ async function isFirstIssue(client, owner, repo, sender, number): Promise<boolea
 
   for (const issue of issues) {
     const issueNumber = issue.number;
+    console.log(issueNumber, number);
     if (issueNumber < number) {
       return false;
     }
