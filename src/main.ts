@@ -9,7 +9,7 @@ async function run() {
     const context = github.context;
 
     // Do nothing if its not a pr or issue
-    console.log('Checking if its a PR, issue, or something else, context payload: ' + context.payload);
+    console.log('Checking if its a PR, issue, or something else, context payload: ' + !!context.payload.issue);
     const isIssue = !!context.payload.issue;
     if (!isIssue && !context.payload.pullRequest) {
       core.setNeutral('Not a pull request or issue');
