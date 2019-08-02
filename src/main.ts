@@ -11,7 +11,6 @@ async function run() {
     const isIssue = !!context.payload.issue;
     if (!isIssue && !context.payload.pullRequest) {
       console.log('Not a pull request or issue');
-      core.setNeutral();
       return;
     }
 
@@ -21,7 +20,6 @@ async function run() {
     const firstContribution = isIssue ? await isFirstIssue(client, context, isIssue, sender) : await isFirstPull(client, context, isIssue, sender);
     if (!firstContribution) {
       console.log('Not the users first contribution');
-      core.setNeutral();
       return;
     }
     
@@ -29,7 +27,6 @@ async function run() {
     const message = isIssue ? core.getInput('issueMessage') : core.getInput('prMessage');
     if (!message) {
       console.log('No message provided for this type of contribution')
-      core.setNeutral();
     }
 
     // Add a comment to the appropriate place
