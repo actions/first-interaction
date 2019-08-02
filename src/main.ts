@@ -91,7 +91,7 @@ async function isFirstPull(client, owner, repo, sender, number, page = 1): Promi
     }
   }
 
-  return await isFirstPull(client, owner, repo, sender, page+1);
+  return await isFirstPull(client, owner, repo, sender, number, page+1);
 }
 
 run();
