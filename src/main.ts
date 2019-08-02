@@ -8,8 +8,8 @@ async function run() {
     const client = new github.GitHub(core.getInput('repoToken', { required: true }));
     const context = github.context;
 
-    if (context.action !== 'opened') {
-      console.log('Nothing was opened, event was ' + context.eventName);
+    if (context.payload.action !== 'opened') {
+      console.log('Nothing was opened, payload action was: ' + context.payload.action);
       return;
     }
 
