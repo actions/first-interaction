@@ -22,7 +22,7 @@ async function run() {
     const issue = context.issue;
     const firstContribution = isIssue ? await isFirstIssue(client, issue.owner, issue.repo, sender) : await isFirstPull(client, issue.owner, issue.repo, sender);
     // if (!firstContribution) {
-    if (!firstContribution) {
+    if (firstContribution) {
       console.log('Not the users first contribution');
       return;
     }
