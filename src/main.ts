@@ -61,7 +61,7 @@ async function isFirstIssue(client, owner, repo, sender): Promise<boolean> {
 
 // No way to filter pulls by creator
 async function isFirstPull(client, owner, repo, sender, page = 1): Promise<boolean> {
-  console.log(`Checking owner: ${owner}, repo: ${repo}, per_page: 100, page: ${page}`);
+  console.log('Checking...');
   const {status, data: pulls} = await client.pulls.list({owner: owner, repo: repo, per_page: 100, page: page, state: 'all'});
 
   if (status !== 200) {
