@@ -9,7 +9,7 @@ async function run() {
     const context = github.context;
 
     if (context.action !== 'opened') {
-      console.log('Nothing was opened');
+      console.log('Nothing was opened, event was ' + context.action);
       return;
     }
 
