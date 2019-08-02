@@ -9,7 +9,7 @@ async function run() {
     const context = github.context;
     console.log(fs.readFileSync(process.env['GITHUB_EVENT_PATH'], { encoding: 'utf8' }));
 
-    if (context.payload.action !== 'opened') {
+    if (context.action !== 'opened') {
       console.log('Nothing was opened');
       return;
     }
