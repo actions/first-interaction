@@ -7,7 +7,6 @@ async function run() {
     // Get client and context
     const client = new github.GitHub(core.getInput('repoToken', { required: true }));
     const context = github.context;
-    console.log(fs.readFileSync(process.env['GITHUB_EVENT_PATH'], { encoding: 'utf8' }));
 
     if (context.action !== 'opened') {
       console.log('Nothing was opened');
