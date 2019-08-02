@@ -35,7 +35,7 @@ async function run() {
     }
 
     // Add a comment to the appropriate place
-    console.log('Adding a comment in the issue or PR');
+    console.log(`Adding message: ${message}`);
     if (isIssue) {
       await client.issues.createComment(issue.owner, issue.repo, issue.number, message);
     }
