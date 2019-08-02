@@ -54,6 +54,7 @@ async function run() {
 }
 
 async function isFirstIssue(client, owner, repo, sender, number): Promise<boolean> {
+  console.log(`owner ${owner}, repo ${repo}, creator: ${sender}`);
   const {status, data: issues} = await client.issues.listForRepo({owner: owner, repo: repo, creator: sender, state: 'all'});
 
   if (status !== 200) {
