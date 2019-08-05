@@ -2,12 +2,12 @@ name: 'First interaction'
 description: 'Get started with Container actions'
 author: 'GitHub'
 inputs:
-  repoToken:
+  repo-token:
     description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
-  issueMessage:
+  issue-message:
     description: 'Comment to post on an individuals first issue'
-  prMessage:
+  pr-message:
     description: 'Comment to post on an individuals first pull request'
 runs:
   using: 'docker'

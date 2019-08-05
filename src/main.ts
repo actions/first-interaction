@@ -6,7 +6,7 @@ async function run() {
   try {
     // Get client and context
     const client = new github.GitHub(
-      core.getInput('repoToken', {required: true})
+      core.getInput('repo-token', {required: true})
     );
     const context = github.context;
 
@@ -48,8 +48,8 @@ async function run() {
 
     // Do nothing if no message set for this type of contribution
     const message = isIssue
-      ? core.getInput('issueMessage')
-      : core.getInput('prMessage');
+      ? core.getInput('issue-message')
+      : core.getInput('pr-message');
     if (!message) {
       console.log('No message provided for this type of contribution');
       return;
