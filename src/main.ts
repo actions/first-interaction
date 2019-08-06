@@ -4,6 +4,13 @@ const fs = require('fs');
 
 async function run() {
   try {
+    const issueMessage = core.getInput('issue-message');
+    const prMessage = core.getInput('pr-message');
+    if (!issueMessage && !prMessage) {
+      throw new Error(
+        'Action must have at least one of issue-message or pr-message set'
+      );
+    }
     // Get client and context
     const client = new github.GitHub(
       core.getInput('repo-token', {required: true})
@@ -11,14 +18,16 @@ async function run() {
     const context = github.context;
 
     if (context.payload.action !== 'opened') {
-      console.log('Nothing was opened');
+      console.log('No issue or PR was opened, skipping');
       return;
     }
 
     // Do nothing if its not a pr or issue
-    const isIssue = !!context.payload.issue;
+    const isIssue: boolean = !!context.payload.issue;
     if (!isIssue && !context.payload.pull_request) {
-      console.log('Not a pull request or issue');
+      console.log(
+        'The event that triggered this action was not a pull request or issue, skipping.'
+      );
       return;
     }
 
@@ -26,37 +35,39 @@ async function run() {
     console.log('Checking if its the users first contribution');
     const sender = context.payload.sender.login;
     const issue = context.issue;
-    const firstContribution = isIssue
-      ? await isFirstIssue(
-          client,
-          issue.owner,
-          issue.repo,
-          sender,
-          issue.number
-        )
-      : await isFirstPull(
-          client,
-          issue.owner,
-          issue.repo,
-          sender,
-          issue.number
-        );
+    let firstContribution = false;
+    if (isIssue) {
+      firstContribution = await isFirstIssue(
+        client,
+        issue.owner,
+        issue.repo,
+        sender,
+        issue.number
+      );
+    } else {
+      firstContribution = await isFirstPull(
+        client,
+        issue.owner,
+        issue.repo,
+        sender,
+        issue.number
+      );
+    }
     if (!firstContribution) {
       console.log('Not the users first contribution');
       return;
     }
 
     // Do nothing if no message set for this type of contribution
-    const message = isIssue
-      ? core.getInput('issue-message')
-      : core.getInput('pr-message');
+    const message = isIssue ? issueMessage : prMessage;
     if (!message) {
       console.log('No message provided for this type of contribution');
       return;
     }
 
+    const issueType = isIssue ? 'issue' : 'pull request';
     // Add a comment to the appropriate place
-    console.log(`Adding message: ${message}`);
+    console.log(`Adding message: ${message} to ${issueType} ${issue.number}`);
     if (isIssue) {
       await client.issues.createComment({
         owner: issue.owner,
@@ -84,7 +95,7 @@ async function isFirstIssue(
   owner,
   repo,
   sender,
-  number
+  curIssueNumber: number
 ): Promise<boolean> {
   const {status, data: issues} = await client.issues.listForRepo({
     owner: owner,
@@ -94,7 +105,7 @@ async function isFirstIssue(
   });
 
   if (status !== 200) {
-    throw new Error(`Received API status code ${status}`);
+    throw new Error(`Received unexpected API status code ${status}`);
   }
 
   if (issues.length === 0) {
@@ -102,8 +113,7 @@ async function isFirstIssue(
   }
 
   for (const issue of issues) {
-    const issueNumber = issue.number;
-    if (issueNumber < number && !issue.pull_request) {
+    if (issue.number < curIssueNumber && !issue.pull_request) {
       return false;
     }
   }
@@ -120,6 +130,7 @@ async function isFirstPull(
   number,
   page = 1
 ): Promise<boolean> {
+  // Provide console output if we loop for a while.
   console.log('Checking...');
   const {status, data: pulls} = await client.pulls.list({
     owner: owner,
@@ -130,7 +141,7 @@ async function isFirstPull(
   });
 
   if (status !== 200) {
-    throw new Error(`Received API status code ${status}`);
+    throw new Error(`Received unexpected API status code ${status}`);
   }
 
   if (pulls.length === 0) {
