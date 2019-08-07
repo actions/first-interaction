@@ -1,18 +1,17 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
-const fs = require('fs');
+import * as core from '@actions/core';
+import * as github from '@actions/github';
 
 async function run() {
   try {
-    const issueMessage = core.getInput('issue-message');
-    const prMessage = core.getInput('pr-message');
+    const issueMessage: string = core.getInput('issue-message');
+    const prMessage: string = core.getInput('pr-message');
     if (!issueMessage && !prMessage) {
       throw new Error(
         'Action must have at least one of issue-message or pr-message set'
       );
     }
     // Get client and context
-    const client = new github.GitHub(
+    const client: github.GitHub = new github.GitHub(
       core.getInput('repo-token', {required: true})
     );
     const context = github.context;
@@ -33,9 +32,12 @@ async function run() {
 
     // Do nothing if its not their first contribution
     console.log('Checking if its the users first contribution');
-    const sender = context.payload.sender.login;
-    const issue = context.issue;
-    let firstContribution = false;
+    if (!context.payload.sender) {
+      throw new Error('Internal error, no sender provided by GitHub');
+    }
+    const sender: string = context.payload.sender!.login;
+    const issue: {owner: string; repo: string; number: number} = context.issue;
+    let firstContribution: boolean = false;
     if (isIssue) {
       firstContribution = await isFirstIssue(
         client,
@@ -59,13 +61,13 @@ async function run() {
     }
 
     // Do nothing if no message set for this type of contribution
-    const message = isIssue ? issueMessage : prMessage;
+    const message: string = isIssue ? issueMessage : prMessage;
     if (!message) {
       console.log('No message provided for this type of contribution');
       return;
     }
 
-    const issueType = isIssue ? 'issue' : 'pull request';
+    const issueType: string = isIssue ? 'issue' : 'pull request';
     // Add a comment to the appropriate place
     console.log(`Adding message: ${message} to ${issueType} ${issue.number}`);
     if (isIssue) {
@@ -91,10 +93,10 @@ async function run() {
 }
 
 async function isFirstIssue(
-  client,
-  owner,
-  repo,
-  sender,
+  client: github.GitHub,
+  owner: string,
+  repo: string,
+  sender: string,
   curIssueNumber: number
 ): Promise<boolean> {
   const {status, data: issues} = await client.issues.listForRepo({
@@ -123,12 +125,12 @@ async function isFirstIssue(
 
 // No way to filter pulls by creator
 async function isFirstPull(
-  client,
-  owner,
-  repo,
-  sender,
-  number,
-  page = 1
+  client: github.GitHub,
+  owner: string,
+  repo: string,
+  sender: string,
+  curPullNumber: number,
+  page: number = 1
 ): Promise<boolean> {
   // Provide console output if we loop for a while.
   console.log('Checking...');
@@ -149,14 +151,20 @@ async function isFirstPull(
   }
 
   for (const pull of pulls) {
-    const login = pull.user.login;
-    const pullNumber = pull.number;
-    if (login === sender && pullNumber < number) {
+    const login: string = pull.user.login;
+    if (login === sender && pull.number < curPullNumber) {
       return false;
     }
   }
 
-  return await isFirstPull(client, owner, repo, sender, number, page + 1);
+  return await isFirstPull(
+    client,
+    owner,
+    repo,
+    sender,
+    curPullNumber,
+    page + 1
+  );
 }
 
 run();
