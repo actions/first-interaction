@@ -1,7 +1,7 @@
 {
-  "name": "container-toolkit-template",
-  "version": "0.0.0",
-  "description": "Container template action using actions/toolkit",
+  "name": "first-interaction-action",
+  "version": "1.0.0",
+  "description": "An action for greeting first time contributors.",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -16,14 +16,15 @@
     "actions",
     "container",
     "toolkit",
-    "setup"
+    "first",
+    "interaction"
   ],
   "author": "GitHub",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/actions/container-toolkit-template/issues"
+    "url": "https://github.com/actions/first-interaction/issues"
   },
-  "homepage": "https://github.com/actions/container-toolkit-template#readme",
+  "homepage": "https://github.com/actions/first-interaction#readme",
   "dependencies": {
     "@actions/core": "file:toolkit/actions-core-0.0.0.tgz",
     "@actions/exec": "file:toolkit/actions-exec-0.0.0.tgz",
