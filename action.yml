@@ -1,10 +1,14 @@
-name: 'Container Action Template'
+name: 'First interaction'
 description: 'Get started with Container actions'
 author: 'GitHub'
-inputs: 
-  myInput:
-    description: 'Input to use'
-    default: 'world'
+inputs:
+  repo-token:
+    description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
+    required: true
+  issue-message:
+    description: 'Comment to post on an individuals first issue'
+  pr-message:
+    description: 'Comment to post on an individuals first pull request'
 runs:
   using: 'docker'
   image: 'Dockerfile'

@@ -1,3 +1,20 @@
-# Container Action Template
+# First Interaction
 
-To get started, click the `Use this template` button on this repository [which will create a new repository based on this template](https://github.blog/2019-06-06-generate-new-repositories-with-repository-templates/).
+An action for filtering pull requests and issues from first-time contributors.
+
+# Usage
+
+See [action.yml](action.yml)
+
+```yaml
+steps:
+- uses: actions/first-interaction@v1
+  with:
+    repo-token: ${{ secrets.GITHUB_TOKEN }}
+    issue-message: '# Mesage with markdown.\nThis is the message that will be displayed on users' first issue.'
+    pr-message: 'Message that will be displayed on users' first pr. Look, a `code block` for markdown.'
+```
+
+# License
+
+The scripts and documentation in this project are released under the [MIT License](LICENSE)
