@@ -10,7 +10,7 @@ jobs:
     name: Check licenses
     steps:
       - uses: actions/checkout@v2
-      - run: npm ci
+      - run: npm install
       - name: Install licensed
         run: |
           cd $RUNNER_TEMP
