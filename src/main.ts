@@ -35,6 +35,7 @@ async function run() {
     if (!context.payload.sender) {
       throw new Error('Internal error, no sender provided by GitHub');
     }
+     /**
     const sender: string = context.payload.sender!.login;
     const issue: {owner: string; repo: string; number: number} = context.issue;
     let firstContribution: boolean = false;
@@ -59,7 +60,7 @@ async function run() {
       console.log('Not the users first contribution');
       return;
     }
-
+*/
     // Do nothing if no message set for this type of contribution
     const message: string = isIssue ? issueMessage : prMessage;
     if (!message) {
