@@ -35,10 +35,12 @@ async function run() {
     if (!context.payload.sender) {
       throw new Error('Internal error, no sender provided by GitHub');
     }
-     /**
+     
     const sender: string = context.payload.sender!.login;
     const issue: {owner: string; repo: string; number: number} = context.issue;
+    /**
     let firstContribution: boolean = false;
+    
     if (isIssue) {
       firstContribution = await isFirstIssue(
         client,
