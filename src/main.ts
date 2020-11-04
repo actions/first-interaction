@@ -30,6 +30,13 @@ async function run() {
       return;
     }
 
+    // Do nothing if no message set for this type of contribution
+    const message: string = isIssue ? issueMessage : prMessage;
+    if (!message) {
+      console.log('No message provided for this type of contribution');
+      return;
+    }
+
     // Do nothing if its not their first contribution
     console.log('Checking if its the users first contribution');
     if (!context.payload.sender) {
@@ -57,13 +64,6 @@ async function run() {
     }
     if (!firstContribution) {
       console.log('Not the users first contribution');
-      return;
-    }
-
-    // Do nothing if no message set for this type of contribution
-    const message: string = isIssue ? issueMessage : prMessage;
-    if (!message) {
-      console.log('No message provided for this type of contribution');
       return;
     }
 
