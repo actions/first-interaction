@@ -14,6 +14,7 @@ steps:
     issue-message: '# Message with markdown.\nThis is the message that will be displayed on users' first issue.'
     pr-message: 'Message that will be displayed on users' first pr. Look, a `code block` for markdown.'
 ```
+Note that `secrets.GITHUB_TOKEN` will be available by default in your workflow. You can read more in the [GitHub Docs](https://docs.github.com/en/free-pro-team@latest/actions/reference/authentication-in-a-workflow). 
 
 # License
 
