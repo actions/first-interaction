@@ -1,6 +1,7 @@
 # First Interaction
 
 An action for filtering pull requests and issues from first-time contributors.
+you can understand the code base easily if you have your fundamentals correct.
 
 # Usage
 
