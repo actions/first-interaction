@@ -152,7 +152,7 @@ async function isFirstPull(
 
   for (const pull of pulls) {
     const login: string = pull.user.login;
-    (login === sender && pull.number < curPullNumber) ? return false : null
+    (login === sender && pull.number < curPullNumber)&&return false
      
   }
 
