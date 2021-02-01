@@ -11,4 +11,4 @@ inputs:
     description: 'Comment to post on an individual''s first pull request'
 runs:
   using: 'node12'
-  main: 'dist/index.js'
+  main: 'lib/main.js'
