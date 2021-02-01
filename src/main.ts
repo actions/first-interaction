@@ -11,9 +11,8 @@ async function run() {
       );
     }
     // Get client and context
-    const client: github.GitHub = new github.GitHub(
-      core.getInput('repo-token', {required: true})
-    );
+    const gh_token = core.getInput('repo-token', {required: true});
+    const client = github.getOctokit(gh_token);
     const context = github.context;
 
     if (context.payload.action !== 'opened') {
@@ -93,7 +92,7 @@ async function run() {
 }
 
 async function isFirstIssue(
-  client: github.GitHub,
+  client: any,
   owner: string,
   repo: string,
   sender: string,
@@ -125,7 +124,7 @@ async function isFirstIssue(
 
 // No way to filter pulls by creator
 async function isFirstPull(
-  client: github.GitHub,
+  client: any,
   owner: string,
   repo: string,
   sender: string,
