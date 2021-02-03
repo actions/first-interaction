@@ -18,3 +18,13 @@ steps:
 # License
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE)
+
+# For developers
+
+To install dependencies:
+
+    npm install
+
+To build:
+
+    npm run build
