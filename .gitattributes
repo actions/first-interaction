@@ -1,0 +1,4 @@
+.licenses/** -diff linguist-generated=true
+- name: First interaction
+  uses: actions/first-interaction@v1.1.0
+
