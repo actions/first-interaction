@@ -11,4 +11,5 @@ inputs:
     description: 'Comment to post on an individual''s first pull request'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'Dockerfile' 
+   first-interaction/action.yml
