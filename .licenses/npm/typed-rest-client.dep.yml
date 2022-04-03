@@ -1,0 +1,946 @@
+---
+name: typed-rest-client
+version: 1.7.3
+type: npm
+summary: Node Rest and Http Clients for use with TypeScript
+homepage: https://github.com/Microsoft/typed-rest-client#readme
+license: mit
+licenses:
+- sources: LICENSE
+  text: "Typed Rest Client for Node.js\r\n\r\nCopyright (c) Microsoft Corporation\r\n\r\nAll
+    rights reserved.\r\n\r\nMIT License\r\n\r\nPermission is hereby granted, free
+    of charge, to any person obtaining a copy of this software and\r\nassociated documentation
+    files (the \"Software\"), to deal in the Software without restriction,\r\nincluding
+    without limitation the rights to use, copy, modify, merge, publish, distribute,
+    sublicense,\r\nand/or sell copies of the Software, and to permit persons to whom
+    the Software is furnished to do so,\r\nsubject to the following conditions:\r\n\r\nThe
+    above copyright notice and this permission notice shall be included in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED *AS IS*,
+    WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT\r\nLIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN\r\nNO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY,\r\nWHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION WITH THE\r\nSOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.\r\n\r\n\r\n/* Node-SMB/ntlm\r\n * https://github.com/Node-SMB/ntlm\r\n
+    * Permission to use, copy, modify, and/or distribute this software for any\r\n
+    * purpose with or without fee is hereby granted, provided that the above\r\n *
+    copyright notice and this permission notice appear in all copies.\r\n *\r\n *
+    THE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\r\n
+    * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\r\n * MERCHANTABILITY
+    AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\r\n * ANY SPECIAL, DIRECT,
+    INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\r\n * WHATSOEVER RESULTING FROM
+    LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\r\n * ACTION OF CONTRACT, NEGLIGENCE
+    OR OTHER TORTIOUS ACTION, ARISING OUT OF\r\n * OR IN CONNECTION WITH THE USE OR
+    PERFORMANCE OF THIS SOFTWARE.\r\n *\r\n * Copyright (C) 2012  Joshua M. Clulow
+    <josh@sysmgr.org>\r\n */\r\n"
+notices:
+- sources: ThirdPartyNotice.txt
+  text: "\r\nTHIRD-PARTY SOFTWARE NOTICES AND INFORMATION\r\nDo Not Translate or Localize\r\n\r\nThis
+    Visual Studio Team Services extension (vsts-task-lib) is based on or incorporates
+    material from the projects listed below (Third Party IP). The original copyright
+    notice and the license under which Microsoft received such Third Party IP, are
+    set forth below. Such licenses and notices are provided for informational purposes
+    only. Microsoft licenses the Third Party IP to you under the licensing terms for
+    the Visual Studio Team Services extension. Microsoft reserves all other rights
+    not expressly granted under this agreement, whether by implication, estoppel or
+    otherwise.\r\n\r\n1.\t@types/glob (https://www.github.com/DefinitelyTyped/DefinitelyTyped.git)\r\n2.\t@types/minimatch
+    (https://www.github.com/DefinitelyTyped/DefinitelyTyped.git)\r\n3.\t@types/mocha
+    (https://www.github.com/DefinitelyTyped/DefinitelyTyped.git)\r\n4.\t@types/node
+    (https://www.github.com/DefinitelyTyped/DefinitelyTyped.git)\r\n5.\t@types/shelljs
+    (https://www.github.com/DefinitelyTyped/DefinitelyTyped.git)\r\n6.\tbalanced-match
+    (git://github.com/juliangruber/balanced-match.git)\r\n7.\tbrace-expansion (git://github.com/juliangruber/brace-expansion.git)\r\n8.\tbrowser-stdout
+    (git+ssh://git@github.com/kumavis/browser-stdout.git)\r\n9.\tcommander (git+https://github.com/tj/commander.js.git)\r\n10.\tconcat-map
+    (git://github.com/substack/node-concat-map.git)\r\n11.\tdebug (git://github.com/visionmedia/debug.git)\r\n12.\tdiff
+    (git://github.com/kpdecker/jsdiff.git)\r\n13.\tescape-string-regexp (git+https://github.com/sindresorhus/escape-string-regexp.git)\r\n14.\tfs.realpath
+    (git+https://github.com/isaacs/fs.realpath.git)\r\n15.\tglob (git://github.com/isaacs/node-glob.git)\r\n16.\tgraceful-readlink
+    (git://github.com/zhiyelee/graceful-readlink.git)\r\n17.\tgrowl (git://github.com/tj/node-growl.git)\r\n18.\thas-flag
+    (git+https://github.com/sindresorhus/has-flag.git)\r\n19.\the (git+https://github.com/mathiasbynens/he.git)\r\n20.\tinflight
+    (git+https://github.com/npm/inflight.git)\r\n21.\tinherits (git://github.com/isaacs/inherits.git)\r\n22.\tinterpret
+    (git://github.com/tkellen/node-interpret.git)\r\n23.\tjson3 (git://github.com/bestiejs/json3.git)\r\n24.\tlodash.create
+    (git+https://github.com/lodash/lodash.git)\r\n25.\tlodash.isarguments (git+https://github.com/lodash/lodash.git)\r\n26.\tlodash.isarray
+    (git+https://github.com/lodash/lodash.git)\r\n27.\tlodash.keys (git+https://github.com/lodash/lodash.git)\r\n28.\tlodash._baseassign
+    (git+https://github.com/lodash/lodash.git)\r\n29.\tlodash._basecopy (git+https://github.com/lodash/lodash.git)\r\n30.\tlodash._basecreate
+    (git+https://github.com/lodash/lodash.git)\r\n31.\tlodash._getnative (git+https://github.com/lodash/lodash.git)\r\n32.\tlodash._isiterateecall
+    (git+https://github.com/lodash/lodash.git)\r\n33.\tminimatch (git://github.com/isaacs/minimatch.git)\r\n34.\tminimist
+    (git://github.com/substack/minimist.git)\r\n35.\tmkdirp (git+https://github.com/substack/node-mkdirp.git)\r\n36.\tmocha
+    (git+https://github.com/mochajs/mocha.git)\r\n37.\tms (git+https://github.com/zeit/ms.git)\r\n38.\tonce
+    (git://github.com/isaacs/once.git)\r\n39.\tpath-is-absolute (git+https://github.com/sindresorhus/path-is-absolute.git)\r\n40.\tpath-parse
+    (git+https://github.com/jbgutierrez/path-parse.git)\r\n41.\trechoir (git://github.com/tkellen/node-rechoir.git)\r\n42.\tresolve
+    (git://github.com/substack/node-resolve.git)\r\n43.\tsemver (git://github.com/npm/node-semver.git)\r\n44.\tshelljs
+    (git://github.com/shelljs/shelljs.git)\r\n45.\tsupports-color (git+https://github.com/chalk/supports-color.git)\r\n46.\ttunnel
+    (git+https://github.com/koichik/node-tunnel.git)\r\n47.\ttypescript (git+https://github.com/Microsoft/TypeScript.git)\r\n48.\tunderscore
+    (git://github.com/jashkenas/underscore.git)\r\n49.\twrappy (git+https://github.com/npm/wrappy.git)\r\n\r\n\r\n%%
+    @types/glob NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nMIT
+    License\r\n\r\n    Copyright (c) Microsoft Corporation. All rights reserved.\r\n\r\n
+    \   Permission is hereby granted, free of charge, to any person obtaining a copy\r\n
+    \   of this software and associated documentation files (the \"Software\"), to
+    deal\r\n    in the Software without restriction, including without limitation
+    the rights\r\n    to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell\r\n    copies of the Software, and to permit persons to whom the Software
+    is\r\n    furnished to do so, subject to the following conditions:\r\n\r\n    The
+    above copyright notice and this permission notice shall be included in all\r\n
+    \   copies or substantial portions of the Software.\r\n\r\n    THE SOFTWARE IS
+    PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\n    IMPLIED, INCLUDING
+    BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\n    FITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\n    AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\n    LIABILITY, WHETHER IN
+    AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\n    OUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\n    SOFTWARE\r\n=========================================\r\nEND
+    OF @types/glob NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% @types/minimatch NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nMIT
+    License\r\n\r\n    Copyright (c) Microsoft Corporation. All rights reserved.\r\n\r\n
+    \   Permission is hereby granted, free of charge, to any person obtaining a copy\r\n
+    \   of this software and associated documentation files (the \"Software\"), to
+    deal\r\n    in the Software without restriction, including without limitation
+    the rights\r\n    to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell\r\n    copies of the Software, and to permit persons to whom the Software
+    is\r\n    furnished to do so, subject to the following conditions:\r\n\r\n    The
+    above copyright notice and this permission notice shall be included in all\r\n
+    \   copies or substantial portions of the Software.\r\n\r\n    THE SOFTWARE IS
+    PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\n    IMPLIED, INCLUDING
+    BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\n    FITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\n    AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\n    LIABILITY, WHETHER IN
+    AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\n    OUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\n    SOFTWARE\r\n=========================================\r\nEND
+    OF @types/minimatch NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% @types/mocha NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nMIT
+    License\r\n\r\n    Copyright (c) Microsoft Corporation. All rights reserved.\r\n\r\n
+    \   Permission is hereby granted, free of charge, to any person obtaining a copy\r\n
+    \   of this software and associated documentation files (the \"Software\"), to
+    deal\r\n    in the Software without restriction, including without limitation
+    the rights\r\n    to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell\r\n    copies of the Software, and to permit persons to whom the Software
+    is\r\n    furnished to do so, subject to the following conditions:\r\n\r\n    The
+    above copyright notice and this permission notice shall be included in all\r\n
+    \   copies or substantial portions of the Software.\r\n\r\n    THE SOFTWARE IS
+    PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\n    IMPLIED, INCLUDING
+    BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\n    FITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\n    AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\n    LIABILITY, WHETHER IN
+    AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\n    OUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\n    SOFTWARE\r\n=========================================\r\nEND
+    OF @types/mocha NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% @types/node NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nMIT
+    License\r\n\r\n    Copyright (c) Microsoft Corporation. All rights reserved.\r\n\r\n
+    \   Permission is hereby granted, free of charge, to any person obtaining a copy\r\n
+    \   of this software and associated documentation files (the \"Software\"), to
+    deal\r\n    in the Software without restriction, including without limitation
+    the rights\r\n    to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell\r\n    copies of the Software, and to permit persons to whom the Software
+    is\r\n    furnished to do so, subject to the following conditions:\r\n\r\n    The
+    above copyright notice and this permission notice shall be included in all\r\n
+    \   copies or substantial portions of the Software.\r\n\r\n    THE SOFTWARE IS
+    PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\n    IMPLIED, INCLUDING
+    BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\n    FITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\n    AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\n    LIABILITY, WHETHER IN
+    AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\n    OUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\n    SOFTWARE\r\n=========================================\r\nEND
+    OF @types/node NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% @types/shelljs NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nMIT
+    License\r\n\r\n    Copyright (c) Microsoft Corporation. All rights reserved.\r\n\r\n
+    \   Permission is hereby granted, free of charge, to any person obtaining a copy\r\n
+    \   of this software and associated documentation files (the \"Software\"), to
+    deal\r\n    in the Software without restriction, including without limitation
+    the rights\r\n    to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell\r\n    copies of the Software, and to permit persons to whom the Software
+    is\r\n    furnished to do so, subject to the following conditions:\r\n\r\n    The
+    above copyright notice and this permission notice shall be included in all\r\n
+    \   copies or substantial portions of the Software.\r\n\r\n    THE SOFTWARE IS
+    PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\n    IMPLIED, INCLUDING
+    BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\n    FITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\n    AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\n    LIABILITY, WHETHER IN
+    AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\n    OUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\n    SOFTWARE\r\n=========================================\r\nEND
+    OF @types/shelljs NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% balanced-match NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\n(MIT)\r\n\r\nCopyright
+    (c) 2013 Julian Gruber &lt;julian@juliangruber.com&gt;\r\n\r\nPermission is hereby
+    granted, free of charge, to any person obtaining a copy of\r\nthis software and
+    associated documentation files (the \"Software\"), to deal in\r\nthe Software
+    without restriction, including without limitation the rights to\r\nuse, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell copies\r\nof the Software,
+    and to permit persons to whom the Software is furnished to do\r\nso, subject to
+    the following conditions:\r\n\r\nThe above copyright notice and this permission
+    notice shall be included in all\r\ncopies or substantial portions of the Software.\r\n\r\nTHE
+    SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR
+    A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\nSOFTWARE.\r\n=========================================\r\nEND
+    OF balanced-match NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% brace-expansion
+    NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nNo
+    license text available.\r\n=========================================\r\nEND OF
+    brace-expansion NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% browser-stdout NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nNo
+    license text available.\r\n=========================================\r\nEND OF
+    browser-stdout NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% commander NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\n(The
+    MIT License)\r\n\r\nCopyright (c) 2011 TJ Holowaychuk <tj@vision-media.ca>\r\n\r\nPermission
+    is hereby granted, free of charge, to any person obtaining\r\na copy of this software
+    and associated documentation files (the\r\n'Software'), to deal in the Software
+    without restriction, including\r\nwithout limitation the rights to use, copy,
+    modify, merge, publish,\r\ndistribute, sublicense, and/or sell copies of the Software,
+    and to\r\npermit persons to whom the Software is furnished to do so, subject to\r\nthe
+    following conditions:\r\n\r\nThe above copyright notice and this permission notice
+    shall be\r\nincluded in all copies or substantial portions of the Software.\r\n\r\nTHE
+    SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR
+    A PARTICULAR PURPOSE AND NONINFRINGEMENT.\r\nIN NO EVENT SHALL THE AUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY\r\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT,\r\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+    WITH THE\r\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF commander NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% concat-map NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nThis software
+    is released under the MIT license:\r\n\r\nPermission is hereby granted, free of
+    charge, to any person obtaining a copy of\r\nthis software and associated documentation
+    files (the \"Software\"), to deal in\r\nthe Software without restriction, including
+    without limitation the rights to\r\nuse, copy, modify, merge, publish, distribute,
+    sublicense, and/or sell copies of\r\nthe Software, and to permit persons to whom
+    the Software is furnished to do so,\r\nsubject to the following conditions:\r\n\r\nThe
+    above copyright notice and this permission notice shall be included in all\r\ncopies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS\r\nFOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR\r\nCOPYRIGHT HOLDERS BE LIABLE
+    FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER\r\nIN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN\r\nCONNECTION WITH THE SOFTWARE
+    OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF concat-map NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% debug NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\n(The MIT
+    License)\r\n\r\nCopyright (c) 2014 TJ Holowaychuk <tj@vision-media.ca>\r\n\r\nPermission
+    is hereby granted, free of charge, to any person obtaining a copy of this software
+    \r\nand associated documentation files (the 'Software'), to deal in the Software
+    without restriction, \r\nincluding without limitation the rights to use, copy,
+    modify, merge, publish, distribute, sublicense, \r\nand/or sell copies of the
+    Software, and to permit persons to whom the Software is furnished to do so,\r\nsubject
+    to the following conditions:\r\n\r\nThe above copyright notice and this permission
+    notice shall be included in all copies or substantial \r\nportions of the Software.\r\n\r\nTHE
+    SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+    INCLUDING BUT NOT \r\nLIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR
+    A PARTICULAR PURPOSE AND NONINFRINGEMENT. \r\nIN NO EVENT SHALL THE AUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, \r\nWHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+    WITH THE \r\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF debug NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% diff NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nSoftware
+    License Agreement (BSD License)\r\n\r\nCopyright (c) 2009-2015, Kevin Decker <kpdecker@gmail.com>\r\n\r\nAll
+    rights reserved.\r\n\r\nRedistribution and use of this software in source and
+    binary forms, with or without modification,\r\nare permitted provided that the
+    following conditions are met:\r\n\r\n* Redistributions of source code must retain
+    the above\r\n  copyright notice, this list of conditions and the\r\n  following
+    disclaimer.\r\n\r\n* Redistributions in binary form must reproduce the above\r\n
+    \ copyright notice, this list of conditions and the\r\n  following disclaimer
+    in the documentation and/or other\r\n  materials provided with the distribution.\r\n\r\n*
+    Neither the name of Kevin Decker nor the names of its\r\n  contributors may be
+    used to endorse or promote products\r\n  derived from this software without specific
+    prior\r\n  written permission.\r\n\r\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT
+    HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR\r\nIMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND\r\nFITNESS FOR
+    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR\r\nCONTRIBUTORS
+    BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\r\nDAMAGES
+    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+    OF USE,\r\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+    THEORY OF LIABILITY, WHETHER\r\nIN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT\r\nOF THE USE OF THIS SOFTWARE,
+    EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\r\n=========================================\r\nEND
+    OF diff NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% escape-string-regexp NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nThe
+    MIT License (MIT)\r\n\r\nCopyright (c) Sindre Sorhus <sindresorhus@gmail.com>
+    (sindresorhus.com)\r\n\r\nPermission is hereby granted, free of charge, to any
+    person obtaining a copy\r\nof this software and associated documentation files
+    (the \"Software\"), to deal\r\nin the Software without restriction, including
+    without limitation the rights\r\nto use, copy, modify, merge, publish, distribute,
+    sublicense, and/or sell\r\ncopies of the Software, and to permit persons to whom
+    the Software is\r\nfurnished to do so, subject to the following conditions:\r\n\r\nThe
+    above copyright notice and this permission notice shall be included in\r\nall
+    copies or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED, INCLUDING BUT
+    NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR COPYRIGHT HOLDERS
+    BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER IN AN ACTION OF
+    CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN\r\nTHE SOFTWARE.\r\n=========================================\r\nEND
+    OF escape-string-regexp NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% fs.realpath
+    NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nThe
+    ISC License\r\n\r\nCopyright (c) Isaac Z. Schlueter and Contributors\r\n\r\nPermission
+    to use, copy, modify, and/or distribute this software for any\r\npurpose with
+    or without fee is hereby granted, provided that the above\r\ncopyright notice
+    and this permission notice appear in all copies.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\r\nWITH REGARD TO THIS SOFTWARE
+    INCLUDING ALL IMPLIED WARRANTIES OF\r\nMERCHANTABILITY AND FITNESS. IN NO EVENT
+    SHALL THE AUTHOR BE LIABLE FOR\r\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+    DAMAGES OR ANY DAMAGES\r\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+    WHETHER IN AN\r\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+    OUT OF OR\r\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\r\n\r\n----\r\n\r\nThis
+    library bundles a version of the `fs.realpath` and `fs.realpathSync`\r\nmethods
+    from Node.js v0.10 under the terms of the Node.js MIT license.\r\n\r\nNode's license
+    follows, also included at the header of `old.js` which contains\r\nthe licensed
+    code:\r\n\r\n  Copyright Joyent, Inc. and other Node contributors.\r\n\r\n  Permission
+    is hereby granted, free of charge, to any person obtaining a\r\n  copy of this
+    software and associated documentation files (the \"Software\"),\r\n  to deal in
+    the Software without restriction, including without limitation\r\n  the rights
+    to use, copy, modify, merge, publish, distribute, sublicense,\r\n  and/or sell
+    copies of the Software, and to permit persons to whom the\r\n  Software is furnished
+    to do so, subject to the following conditions:\r\n\r\n  The above copyright notice
+    and this permission notice shall be included in\r\n  all copies or substantial
+    portions of the Software.\r\n\r\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT
+    WARRANTY OF ANY KIND, EXPRESS OR\r\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    WARRANTIES OF MERCHANTABILITY,\r\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE\r\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER\r\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+    ARISING\r\n  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER\r\n
+    \ DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF fs.realpath NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% glob NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nThe ISC
+    License\r\n\r\nCopyright (c) Isaac Z. Schlueter and Contributors\r\n\r\nPermission
+    to use, copy, modify, and/or distribute this software for any\r\npurpose with
+    or without fee is hereby granted, provided that the above\r\ncopyright notice
+    and this permission notice appear in all copies.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\r\nWITH REGARD TO THIS SOFTWARE
+    INCLUDING ALL IMPLIED WARRANTIES OF\r\nMERCHANTABILITY AND FITNESS. IN NO EVENT
+    SHALL THE AUTHOR BE LIABLE FOR\r\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+    DAMAGES OR ANY DAMAGES\r\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+    WHETHER IN AN\r\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+    OUT OF OR\r\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\r\n=========================================\r\nEND
+    OF glob NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% graceful-readlink NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nThe
+    MIT License (MIT)\r\n\r\nCopyright (c) 2015 Zhiye Li\r\n\r\nPermission is hereby
+    granted, free of charge, to any person obtaining a copy\r\nof this software and
+    associated documentation files (the \"Software\"), to deal\r\nin the Software
+    without restriction, including without limitation the rights\r\nto use, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell\r\ncopies of the Software,
+    and to permit persons to whom the Software is\r\nfurnished to do so, subject to
+    the following conditions:\r\n\r\nThe above copyright notice and this permission
+    notice shall be included in all\r\ncopies or substantial portions of the Software.\r\n\r\nTHE
+    SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR
+    A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\nSOFTWARE.\r\n=========================================\r\nEND
+    OF graceful-readlink NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% growl NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nNo
+    license text available.\r\n=========================================\r\nEND OF
+    growl NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% has-flag NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nThe MIT
+    License (MIT)\r\n\r\nCopyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)\r\n\r\nPermission
+    is hereby granted, free of charge, to any person obtaining a copy\r\nof this software
+    and associated documentation files (the \"Software\"), to deal\r\nin the Software
+    without restriction, including without limitation the rights\r\nto use, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell\r\ncopies of the Software,
+    and to permit persons to whom the Software is\r\nfurnished to do so, subject to
+    the following conditions:\r\n\r\nThe above copyright notice and this permission
+    notice shall be included in\r\nall copies or substantial portions of the Software.\r\n\r\nTHE
+    SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR
+    A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\r\nTHE SOFTWARE.\r\n=========================================\r\nEND
+    OF has-flag NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% he NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    Mathias Bynens <https://mathiasbynens.be/>\r\n\r\nPermission is hereby granted,
+    free of charge, to any person obtaining\r\na copy of this software and associated
+    documentation files (the\r\n\"Software\"), to deal in the Software without restriction,
+    including\r\nwithout limitation the rights to use, copy, modify, merge, publish,\r\ndistribute,
+    sublicense, and/or sell copies of the Software, and to\r\npermit persons to whom
+    the Software is furnished to do so, subject to\r\nthe following conditions:\r\n\r\nThe
+    above copyright notice and this permission notice shall be\r\nincluded in all
+    copies or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT
+    NOT LIMITED TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE AND\r\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+    BE\r\nLIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\r\nOF
+    CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\r\nWITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF he NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% inflight NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nThe ISC
+    License\r\n\r\nCopyright (c) Isaac Z. Schlueter\r\n\r\nPermission to use, copy,
+    modify, and/or distribute this software for any\r\npurpose with or without fee
+    is hereby granted, provided that the above\r\ncopyright notice and this permission
+    notice appear in all copies.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE
+    AUTHOR DISCLAIMS ALL WARRANTIES\r\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL
+    IMPLIED WARRANTIES OF\r\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR
+    BE LIABLE FOR\r\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
+    DAMAGES\r\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+    AN\r\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+    OR\r\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\r\n=========================================\r\nEND
+    OF inflight NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% inherits NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nThe ISC
+    License\r\n\r\nCopyright (c) Isaac Z. Schlueter\r\n\r\nPermission to use, copy,
+    modify, and/or distribute this software for any\r\npurpose with or without fee
+    is hereby granted, provided that the above\r\ncopyright notice and this permission
+    notice appear in all copies.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE
+    AUTHOR DISCLAIMS ALL WARRANTIES WITH\r\nREGARD TO THIS SOFTWARE INCLUDING ALL
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND\r\nFITNESS. IN NO EVENT SHALL THE AUTHOR
+    BE LIABLE FOR ANY SPECIAL, DIRECT,\r\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
+    DAMAGES WHATSOEVER RESULTING FROM\r\nLOSS OF USE, DATA OR PROFITS, WHETHER IN
+    AN ACTION OF CONTRACT, NEGLIGENCE OR\r\nOTHER TORTIOUS ACTION, ARISING OUT OF
+    OR IN CONNECTION WITH THE USE OR\r\nPERFORMANCE OF THIS SOFTWARE.\r\n=========================================\r\nEND
+    OF inherits NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% interpret NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    (c) 2014 Tyler Kellen\r\n\r\nPermission is hereby granted, free of charge, to
+    any person\r\nobtaining a copy of this software and associated documentation\r\nfiles
+    (the \"Software\"), to deal in the Software without\r\nrestriction, including
+    without limitation the rights to use,\r\ncopy, modify, merge, publish, distribute,
+    sublicense, and/or sell\r\ncopies of the Software, and to permit persons to whom
+    the\r\nSoftware is furnished to do so, subject to the following\r\nconditions:\r\n\r\nThe
+    above copyright notice and this permission notice shall be\r\nincluded in all
+    copies or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT
+    NOT LIMITED TO THE WARRANTIES\r\nOF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE AND\r\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT\r\nHOLDERS
+    BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\nWHETHER IN AN ACTION OF
+    CONTRACT, TORT OR OTHERWISE, ARISING\r\nFROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR\r\nOTHER DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF interpret NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% json3 NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    (c) 2012-2014 Kit Cambridge.\r\nhttp://kitcambridge.be/\r\n\r\nPermission is hereby
+    granted, free of charge, to any person obtaining a copy of\r\nthis software and
+    associated documentation files (the \"Software\"), to deal in\r\nthe Software
+    without restriction, including without limitation the rights to\r\nuse, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell copies\r\nof the Software,
+    and to permit persons to whom the Software is furnished to do\r\nso, subject to
+    the following conditions:\r\n\r\nThe above copyright notice and this permission
+    notice shall be included in all\r\ncopies or substantial portions of the Software.\r\n\r\nTHE
+    SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR
+    A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\nSOFTWARE.\r\n=========================================\r\nEND
+    OF json3 NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% lodash.create NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    2012-2015 The Dojo Foundation <http://dojofoundation.org/>\r\nBased on Underscore.js,
+    copyright 2009-2015 Jeremy Ashkenas,\r\nDocumentCloud and Investigative Reporters
+    & Editors <http://underscorejs.org/>\r\n\r\nPermission is hereby granted, free
+    of charge, to any person obtaining\r\na copy of this software and associated documentation
+    files (the\r\n\"Software\"), to deal in the Software without restriction, including\r\nwithout
+    limitation the rights to use, copy, modify, merge, publish,\r\ndistribute, sublicense,
+    and/or sell copies of the Software, and to\r\npermit persons to whom the Software
+    is furnished to do so, subject to\r\nthe following conditions:\r\n\r\nThe above
+    copyright notice and this permission notice shall be\r\nincluded in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\nNONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\r\nLIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\r\nOF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION\r\nWITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF lodash.create NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% lodash.isarguments
+    NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    jQuery Foundation and other contributors <https://jquery.org/>\r\n\r\nBased on
+    Underscore.js, copyright Jeremy Ashkenas,\r\nDocumentCloud and Investigative Reporters
+    & Editors <http://underscorejs.org/>\r\n\r\nThis software consists of voluntary
+    contributions made by many\r\nindividuals. For exact contribution history, see
+    the revision history\r\navailable at https://github.com/lodash/lodash\r\n\r\nThe
+    following license applies to all parts of this software except as\r\ndocumented
+    below:\r\n\r\n====\r\n\r\nPermission is hereby granted, free of charge, to any
+    person obtaining\r\na copy of this software and associated documentation files
+    (the\r\n\"Software\"), to deal in the Software without restriction, including\r\nwithout
+    limitation the rights to use, copy, modify, merge, publish,\r\ndistribute, sublicense,
+    and/or sell copies of the Software, and to\r\npermit persons to whom the Software
+    is furnished to do so, subject to\r\nthe following conditions:\r\n\r\nThe above
+    copyright notice and this permission notice shall be\r\nincluded in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\nNONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\r\nLIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\r\nOF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION\r\nWITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.\r\n\r\n====\r\n\r\nCopyright and related rights for
+    sample code are waived via CC0. Sample\r\ncode is defined as all source code displayed
+    within the prose of the\r\ndocumentation.\r\n\r\nCC0: http://creativecommons.org/publicdomain/zero/1.0/\r\n\r\n====\r\n\r\nFiles
+    located in the node_modules and vendor directories are externally\r\nmaintained
+    libraries used by this software which have their own\r\nlicenses; we recommend
+    you read them, as their terms may differ from the\r\nterms above.\r\n=========================================\r\nEND
+    OF lodash.isarguments NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% lodash.isarray
+    NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    2012-2015 The Dojo Foundation <http://dojofoundation.org/>\r\nBased on Underscore.js,
+    copyright 2009-2015 Jeremy Ashkenas,\r\nDocumentCloud and Investigative Reporters
+    & Editors <http://underscorejs.org/>\r\n\r\nPermission is hereby granted, free
+    of charge, to any person obtaining\r\na copy of this software and associated documentation
+    files (the\r\n\"Software\"), to deal in the Software without restriction, including\r\nwithout
+    limitation the rights to use, copy, modify, merge, publish,\r\ndistribute, sublicense,
+    and/or sell copies of the Software, and to\r\npermit persons to whom the Software
+    is furnished to do so, subject to\r\nthe following conditions:\r\n\r\nThe above
+    copyright notice and this permission notice shall be\r\nincluded in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\nNONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\r\nLIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\r\nOF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION\r\nWITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF lodash.isarray NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% lodash.keys NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    2012-2015 The Dojo Foundation <http://dojofoundation.org/>\r\nBased on Underscore.js,
+    copyright 2009-2015 Jeremy Ashkenas,\r\nDocumentCloud and Investigative Reporters
+    & Editors <http://underscorejs.org/>\r\n\r\nPermission is hereby granted, free
+    of charge, to any person obtaining\r\na copy of this software and associated documentation
+    files (the\r\n\"Software\"), to deal in the Software without restriction, including\r\nwithout
+    limitation the rights to use, copy, modify, merge, publish,\r\ndistribute, sublicense,
+    and/or sell copies of the Software, and to\r\npermit persons to whom the Software
+    is furnished to do so, subject to\r\nthe following conditions:\r\n\r\nThe above
+    copyright notice and this permission notice shall be\r\nincluded in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\nNONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\r\nLIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\r\nOF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION\r\nWITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF lodash.keys NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% lodash._baseassign
+    NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    2012-2015 The Dojo Foundation <http://dojofoundation.org/>\r\nBased on Underscore.js,
+    copyright 2009-2015 Jeremy Ashkenas,\r\nDocumentCloud and Investigative Reporters
+    & Editors <http://underscorejs.org/>\r\n\r\nPermission is hereby granted, free
+    of charge, to any person obtaining\r\na copy of this software and associated documentation
+    files (the\r\n\"Software\"), to deal in the Software without restriction, including\r\nwithout
+    limitation the rights to use, copy, modify, merge, publish,\r\ndistribute, sublicense,
+    and/or sell copies of the Software, and to\r\npermit persons to whom the Software
+    is furnished to do so, subject to\r\nthe following conditions:\r\n\r\nThe above
+    copyright notice and this permission notice shall be\r\nincluded in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\nNONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\r\nLIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\r\nOF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION\r\nWITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF lodash._baseassign NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% lodash._basecopy
+    NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    2012-2015 The Dojo Foundation <http://dojofoundation.org/>\r\nBased on Underscore.js,
+    copyright 2009-2015 Jeremy Ashkenas,\r\nDocumentCloud and Investigative Reporters
+    & Editors <http://underscorejs.org/>\r\n\r\nPermission is hereby granted, free
+    of charge, to any person obtaining\r\na copy of this software and associated documentation
+    files (the\r\n\"Software\"), to deal in the Software without restriction, including\r\nwithout
+    limitation the rights to use, copy, modify, merge, publish,\r\ndistribute, sublicense,
+    and/or sell copies of the Software, and to\r\npermit persons to whom the Software
+    is furnished to do so, subject to\r\nthe following conditions:\r\n\r\nThe above
+    copyright notice and this permission notice shall be\r\nincluded in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\nNONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\r\nLIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\r\nOF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION\r\nWITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF lodash._basecopy NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% lodash._basecreate
+    NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    2012-2015 The Dojo Foundation <http://dojofoundation.org/>\r\nBased on Underscore.js,
+    copyright 2009-2015 Jeremy Ashkenas,\r\nDocumentCloud and Investigative Reporters
+    & Editors <http://underscorejs.org/>\r\n\r\nPermission is hereby granted, free
+    of charge, to any person obtaining\r\na copy of this software and associated documentation
+    files (the\r\n\"Software\"), to deal in the Software without restriction, including\r\nwithout
+    limitation the rights to use, copy, modify, merge, publish,\r\ndistribute, sublicense,
+    and/or sell copies of the Software, and to\r\npermit persons to whom the Software
+    is furnished to do so, subject to\r\nthe following conditions:\r\n\r\nThe above
+    copyright notice and this permission notice shall be\r\nincluded in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\nNONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\r\nLIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\r\nOF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION\r\nWITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF lodash._basecreate NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% lodash._getnative
+    NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    2012-2015 The Dojo Foundation <http://dojofoundation.org/>\r\nBased on Underscore.js,
+    copyright 2009-2015 Jeremy Ashkenas,\r\nDocumentCloud and Investigative Reporters
+    & Editors <http://underscorejs.org/>\r\n\r\nPermission is hereby granted, free
+    of charge, to any person obtaining\r\na copy of this software and associated documentation
+    files (the\r\n\"Software\"), to deal in the Software without restriction, including\r\nwithout
+    limitation the rights to use, copy, modify, merge, publish,\r\ndistribute, sublicense,
+    and/or sell copies of the Software, and to\r\npermit persons to whom the Software
+    is furnished to do so, subject to\r\nthe following conditions:\r\n\r\nThe above
+    copyright notice and this permission notice shall be\r\nincluded in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\nNONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\r\nLIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\r\nOF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION\r\nWITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF lodash._getnative NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% lodash._isiterateecall
+    NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    2012-2015 The Dojo Foundation <http://dojofoundation.org/>\r\nBased on Underscore.js,
+    copyright 2009-2015 Jeremy Ashkenas,\r\nDocumentCloud and Investigative Reporters
+    & Editors <http://underscorejs.org/>\r\n\r\nPermission is hereby granted, free
+    of charge, to any person obtaining\r\na copy of this software and associated documentation
+    files (the\r\n\"Software\"), to deal in the Software without restriction, including\r\nwithout
+    limitation the rights to use, copy, modify, merge, publish,\r\ndistribute, sublicense,
+    and/or sell copies of the Software, and to\r\npermit persons to whom the Software
+    is furnished to do so, subject to\r\nthe following conditions:\r\n\r\nThe above
+    copyright notice and this permission notice shall be\r\nincluded in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\nNONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\r\nLIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\r\nOF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION\r\nWITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF lodash._isiterateecall NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% minimatch
+    NOTICES, INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nThe
+    ISC License\r\n\r\nCopyright (c) Isaac Z. Schlueter and Contributors\r\n\r\nPermission
+    to use, copy, modify, and/or distribute this software for any\r\npurpose with
+    or without fee is hereby granted, provided that the above\r\ncopyright notice
+    and this permission notice appear in all copies.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\r\nWITH REGARD TO THIS SOFTWARE
+    INCLUDING ALL IMPLIED WARRANTIES OF\r\nMERCHANTABILITY AND FITNESS. IN NO EVENT
+    SHALL THE AUTHOR BE LIABLE FOR\r\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+    DAMAGES OR ANY DAMAGES\r\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+    WHETHER IN AN\r\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+    OUT OF OR\r\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\r\n=========================================\r\nEND
+    OF minimatch NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% minimist NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nThis software
+    is released under the MIT license:\r\n\r\nPermission is hereby granted, free of
+    charge, to any person obtaining a copy of\r\nthis software and associated documentation
+    files (the \"Software\"), to deal in\r\nthe Software without restriction, including
+    without limitation the rights to\r\nuse, copy, modify, merge, publish, distribute,
+    sublicense, and/or sell copies of\r\nthe Software, and to permit persons to whom
+    the Software is furnished to do so,\r\nsubject to the following conditions:\r\n\r\nThe
+    above copyright notice and this permission notice shall be included in all\r\ncopies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS\r\nFOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR\r\nCOPYRIGHT HOLDERS BE LIABLE
+    FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER\r\nIN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN\r\nCONNECTION WITH THE SOFTWARE
+    OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF minimist NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% mkdirp NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    2010 James Halliday (mail@substack.net)\r\n\r\nThis project is free software released
+    under the MIT/X11 license:\r\n\r\nPermission is hereby granted, free of charge,
+    to any person obtaining a copy\r\nof this software and associated documentation
+    files (the \"Software\"), to deal\r\nin the Software without restriction, including
+    without limitation the rights\r\nto use, copy, modify, merge, publish, distribute,
+    sublicense, and/or sell\r\ncopies of the Software, and to permit persons to whom
+    the Software is\r\nfurnished to do so, subject to the following conditions:\r\n\r\nThe
+    above copyright notice and this permission notice shall be included in\r\nall
+    copies or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED, INCLUDING BUT
+    NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR COPYRIGHT HOLDERS
+    BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER IN AN ACTION OF
+    CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN\r\nTHE SOFTWARE.\r\n=========================================\r\nEND
+    OF mkdirp NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% mocha NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\n(The MIT
+    License)\r\n\r\nCopyright (c) 2011-2017 JS Foundation and contributors, https://js.foundation\r\n\r\nPermission
+    is hereby granted, free of charge, to any person obtaining\r\na copy of this software
+    and associated documentation files (the\r\n'Software'), to deal in the Software
+    without restriction, including\r\nwithout limitation the rights to use, copy,
+    modify, merge, publish,\r\ndistribute, sublicense, and/or sell copies of the Software,
+    and to\r\npermit persons to whom the Software is furnished to do so, subject to\r\nthe
+    following conditions:\r\n\r\nThe above copyright notice and this permission notice
+    shall be\r\nincluded in all copies or substantial portions of the Software.\r\n\r\nTHE
+    SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR
+    A PARTICULAR PURPOSE AND NONINFRINGEMENT.\r\nIN NO EVENT SHALL THE AUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY\r\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT,\r\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+    WITH THE\r\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF mocha NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% ms NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nThe MIT
+    License (MIT)\r\n\r\nCopyright (c) 2016 Zeit, Inc.\r\n\r\nPermission is hereby
+    granted, free of charge, to any person obtaining a copy\r\nof this software and
+    associated documentation files (the \"Software\"), to deal\r\nin the Software
+    without restriction, including without limitation the rights\r\nto use, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell\r\ncopies of the Software,
+    and to permit persons to whom the Software is\r\nfurnished to do so, subject to
+    the following conditions:\r\n\r\nThe above copyright notice and this permission
+    notice shall be included in all\r\ncopies or substantial portions of the Software.\r\n\r\nTHE
+    SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR
+    A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\nSOFTWARE.\r\n=========================================\r\nEND
+    OF ms NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% once NOTICES, INFORMATION, AND
+    LICENSE BEGIN HERE\r\n=========================================\r\nThe ISC License\r\n\r\nCopyright
+    (c) Isaac Z. Schlueter and Contributors\r\n\r\nPermission to use, copy, modify,
+    and/or distribute this software for any\r\npurpose with or without fee is hereby
+    granted, provided that the above\r\ncopyright notice and this permission notice
+    appear in all copies.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR
+    DISCLAIMS ALL WARRANTIES\r\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+    WARRANTIES OF\r\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE
+    LIABLE FOR\r\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\r\nWHATSOEVER
+    RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\r\nACTION OF CONTRACT,
+    NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR\r\nIN CONNECTION WITH THE
+    USE OR PERFORMANCE OF THIS SOFTWARE.\r\n=========================================\r\nEND
+    OF once NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% path-is-absolute NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nThe
+    MIT License (MIT)\r\n\r\nCopyright (c) Sindre Sorhus <sindresorhus@gmail.com>
+    (sindresorhus.com)\r\n\r\nPermission is hereby granted, free of charge, to any
+    person obtaining a copy\r\nof this software and associated documentation files
+    (the \"Software\"), to deal\r\nin the Software without restriction, including
+    without limitation the rights\r\nto use, copy, modify, merge, publish, distribute,
+    sublicense, and/or sell\r\ncopies of the Software, and to permit persons to whom
+    the Software is\r\nfurnished to do so, subject to the following conditions:\r\n\r\nThe
+    above copyright notice and this permission notice shall be included in\r\nall
+    copies or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED, INCLUDING BUT
+    NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR COPYRIGHT HOLDERS
+    BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER IN AN ACTION OF
+    CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN\r\nTHE SOFTWARE.\r\n=========================================\r\nEND
+    OF path-is-absolute NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% path-parse NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nNo
+    license text available.\r\n=========================================\r\nEND OF
+    path-parse NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% rechoir NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    (c) 2015 Tyler Kellen\r\n\r\nPermission is hereby granted, free of charge, to
+    any person\r\nobtaining a copy of this software and associated documentation\r\nfiles
+    (the \"Software\"), to deal in the Software without\r\nrestriction, including
+    without limitation the rights to use,\r\ncopy, modify, merge, publish, distribute,
+    sublicense, and/or sell\r\ncopies of the Software, and to permit persons to whom
+    the\r\nSoftware is furnished to do so, subject to the following\r\nconditions:\r\n\r\nThe
+    above copyright notice and this permission notice shall be\r\nincluded in all
+    copies or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT
+    NOT LIMITED TO THE WARRANTIES\r\nOF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE AND\r\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT\r\nHOLDERS
+    BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\nWHETHER IN AN ACTION OF
+    CONTRACT, TORT OR OTHERWISE, ARISING\r\nFROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR\r\nOTHER DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF rechoir NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% resolve NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nThis software
+    is released under the MIT license:\r\n\r\nPermission is hereby granted, free of
+    charge, to any person obtaining a copy of\r\nthis software and associated documentation
+    files (the \"Software\"), to deal in\r\nthe Software without restriction, including
+    without limitation the rights to\r\nuse, copy, modify, merge, publish, distribute,
+    sublicense, and/or sell copies of\r\nthe Software, and to permit persons to whom
+    the Software is furnished to do so,\r\nsubject to the following conditions:\r\n\r\nThe
+    above copyright notice and this permission notice shall be included in all\r\ncopies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS\r\nFOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR\r\nCOPYRIGHT HOLDERS BE LIABLE
+    FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER\r\nIN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN\r\nCONNECTION WITH THE SOFTWARE
+    OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF resolve NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% semver NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    (c) Isaac Z. Schlueter (\"Author\")\r\nAll rights reserved.\r\n\r\nThe BSD License\r\n\r\nRedistribution
+    and use in source and binary forms, with or without\r\nmodification, are permitted
+    provided that the following conditions\r\nare met:\r\n\r\n1. Redistributions of
+    source code must retain the above copyright\r\n   notice, this list of conditions
+    and the following disclaimer.\r\n\r\n2. Redistributions in binary form must reproduce
+    the above copyright\r\n   notice, this list of conditions and the following disclaimer
+    in the\r\n   documentation and/or other materials provided with the distribution.\r\n\r\nTHIS
+    SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND\r\nANY EXPRESS
+    OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\r\nIMPLIED WARRANTIES
+    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR\r\nPURPOSE ARE DISCLAIMED.  IN
+    NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS\r\nBE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR\r\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF\r\nSUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+    OR PROFITS; OR\r\nBUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,\r\nWHETHER
+    IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE\r\nOR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN\r\nIF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.\r\n=========================================\r\nEND
+    OF semver NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% shelljs NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    (c) 2012, Artur Adib <arturadib@gmail.com>\r\nAll rights reserved.\r\n\r\nYou
+    may use this project under the terms of the New BSD license as follows:\r\n\r\nRedistribution
+    and use in source and binary forms, with or without\r\nmodification, are permitted
+    provided that the following conditions are met:\r\n    * Redistributions of source
+    code must retain the above copyright\r\n      notice, this list of conditions
+    and the following disclaimer.\r\n    * Redistributions in binary form must reproduce
+    the above copyright\r\n      notice, this list of conditions and the following
+    disclaimer in the\r\n      documentation and/or other materials provided with
+    the distribution.\r\n    * Neither the name of Artur Adib nor the\r\n      names
+    of the contributors may be used to endorse or promote products\r\n      derived
+    from this software without specific prior written permission.\r\n\r\nTHIS SOFTWARE
+    IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" \r\nAND ANY EXPRESS
+    OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE \r\nIMPLIED WARRANTIES
+    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE \r\nARE DISCLAIMED. IN
+    NO EVENT SHALL ARTUR ADIB BE LIABLE FOR ANY\r\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES\r\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+    OF SUBSTITUTE GOODS OR SERVICES;\r\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND\r\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+    STRICT LIABILITY, OR TORT\r\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+    WAY OUT OF THE USE OF \r\nTHIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.\r\n=========================================\r\nEND OF shelljs NOTICES,
+    INFORMATION, AND LICENSE\r\n\r\n%% supports-color NOTICES, INFORMATION, AND LICENSE
+    BEGIN HERE\r\n=========================================\r\nThe MIT License (MIT)\r\n\r\nCopyright
+    (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)\r\n\r\nPermission
+    is hereby granted, free of charge, to any person obtaining a copy\r\nof this software
+    and associated documentation files (the \"Software\"), to deal\r\nin the Software
+    without restriction, including without limitation the rights\r\nto use, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell\r\ncopies of the Software,
+    and to permit persons to whom the Software is\r\nfurnished to do so, subject to
+    the following conditions:\r\n\r\nThe above copyright notice and this permission
+    notice shall be included in\r\nall copies or substantial portions of the Software.\r\n\r\nTHE
+    SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR
+    A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\r\nTHE SOFTWARE.\r\n=========================================\r\nEND
+    OF supports-color NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% tunnel NOTICES,
+    INFORMATION, AND LICENSE BEGIN HERE\r\n=========================================\r\nThe
+    MIT License (MIT)\r\n\r\nCopyright (c) 2012 Koichi Kobayashi\r\n\r\nPermission
+    is hereby granted, free of charge, to any person obtaining a copy\r\nof this software
+    and associated documentation files (the \"Software\"), to deal\r\nin the Software
+    without restriction, including without limitation the rights\r\nto use, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell\r\ncopies of the Software,
+    and to permit persons to whom the Software is\r\nfurnished to do so, subject to
+    the following conditions:\r\n\r\nThe above copyright notice and this permission
+    notice shall be included in\r\nall copies or substantial portions of the Software.\r\n\r\nTHE
+    SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR
+    A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\r\nTHE SOFTWARE.\r\n=========================================\r\nEND
+    OF tunnel NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% typescript NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nApache
+    License\r\n\r\nVersion 2.0, January 2004\r\n\r\nhttp://www.apache.org/licenses/
+    \r\n\r\nTERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\r\n\r\n1.
+    Definitions.\r\n\r\n\"License\" shall mean the terms and conditions for use, reproduction,
+    and distribution as defined by Sections 1 through 9 of this document.\r\n\r\n\"Licensor\"
+    shall mean the copyright owner or entity authorized by the copyright owner that
+    is granting the License.\r\n\r\n\"Legal Entity\" shall mean the union of the acting
+    entity and all other entities that control, are controlled by, or are under common
+    control with that entity. For the purposes of this definition, \"control\" means
+    (i) the power, direct or indirect, to cause the direction or management of such
+    entity, whether by contract or otherwise, or (ii) ownership of fifty percent (50%)
+    or more of the outstanding shares, or (iii) beneficial ownership of such entity.\r\n\r\n\"You\"
+    (or \"Your\") shall mean an individual or Legal Entity exercising permissions
+    granted by this License.\r\n\r\n\"Source\" form shall mean the preferred form
+    for making modifications, including but not limited to software source code, documentation
+    source, and configuration files.\r\n\r\n\"Object\" form shall mean any form resulting
+    from mechanical transformation or translation of a Source form, including but
+    not limited to compiled object code, generated documentation, and conversions
+    to other media types.\r\n\r\n\"Work\" shall mean the work of authorship, whether
+    in Source or Object form, made available under the License, as indicated by a
+    copyright notice that is included in or attached to the work (an example is provided
+    in the Appendix below).\r\n\r\n\"Derivative Works\" shall mean any work, whether
+    in Source or Object form, that is based on (or derived from) the Work and for
+    which the editorial revisions, annotations, elaborations, or other modifications
+    represent, as a whole, an original work of authorship. For the purposes of this
+    License, Derivative Works shall not include works that remain separable from,
+    or merely link (or bind by name) to the interfaces of, the Work and Derivative
+    Works thereof.\r\n\r\n\"Contribution\" shall mean any work of authorship, including
+    the original version of the Work and any modifications or additions to that Work
+    or Derivative Works thereof, that is intentionally submitted to Licensor for inclusion
+    in the Work by the copyright owner or by an individual or Legal Entity authorized
+    to submit on behalf of the copyright owner. For the purposes of this definition,
+    \"submitted\" means any form of electronic, verbal, or written communication sent
+    to the Licensor or its representatives, including but not limited to communication
+    on electronic mailing lists, source code control systems, and issue tracking systems
+    that are managed by, or on behalf of, the Licensor for the purpose of discussing
+    and improving the Work, but excluding communication that is conspicuously marked
+    or otherwise designated in writing by the copyright owner as \"Not a Contribution.\"\r\n\r\n\"Contributor\"
+    shall mean Licensor and any individual or Legal Entity on behalf of whom a Contribution
+    has been received by Licensor and subsequently incorporated within the Work.\r\n\r\n2.
+    Grant of Copyright License. Subject to the terms and conditions of this License,
+    each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge,
+    royalty-free, irrevocable copyright license to reproduce, prepare Derivative Works
+    of, publicly display, publicly perform, sublicense, and distribute the Work and
+    such Derivative Works in Source or Object form.\r\n\r\n3. Grant of Patent License.
+    Subject to the terms and conditions of this License, each Contributor hereby grants
+    to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+    (except as stated in this section) patent license to make, have made, use, offer
+    to sell, sell, import, and otherwise transfer the Work, where such license applies
+    only to those patent claims licensable by such Contributor that are necessarily
+    infringed by their Contribution(s) alone or by combination of their Contribution(s)
+    with the Work to which such Contribution(s) was submitted. If You institute patent
+    litigation against any entity (including a cross-claim or counterclaim in a lawsuit)
+    alleging that the Work or a Contribution incorporated within the Work constitutes
+    direct or contributory patent infringement, then any patent licenses granted to
+    You under this License for that Work shall terminate as of the date such litigation
+    is filed.\r\n\r\n4. Redistribution. You may reproduce and distribute copies of
+    the Work or Derivative Works thereof in any medium, with or without modifications,
+    and in Source or Object form, provided that You meet the following conditions:\r\n\r\nYou
+    must give any other recipients of the Work or Derivative Works a copy of this
+    License; and\r\n\r\nYou must cause any modified files to carry prominent notices
+    stating that You changed the files; and\r\n\r\nYou must retain, in the Source
+    form of any Derivative Works that You distribute, all copyright, patent, trademark,
+    and attribution notices from the Source form of the Work, excluding those notices
+    that do not pertain to any part of the Derivative Works; and\r\n\r\nIf the Work
+    includes a \"NOTICE\" text file as part of its distribution, then any Derivative
+    Works that You distribute must include a readable copy of the attribution notices
+    contained within such NOTICE file, excluding those notices that do not pertain
+    to any part of the Derivative Works, in at least one of the following places:
+    within a NOTICE text file distributed as part of the Derivative Works; within
+    the Source form or documentation, if provided along with the Derivative Works;
+    or, within a display generated by the Derivative Works, if and wherever such third-party
+    notices normally appear. The contents of the NOTICE file are for informational
+    purposes only and do not modify the License. You may add Your own attribution
+    notices within Derivative Works that You distribute, alongside or as an addendum
+    to the NOTICE text from the Work, provided that such additional attribution notices
+    cannot be construed as modifying the License. You may add Your own copyright statement
+    to Your modifications and may provide additional or different license terms and
+    conditions for use, reproduction, or distribution of Your modifications, or for
+    any such Derivative Works as a whole, provided Your use, reproduction, and distribution
+    of the Work otherwise complies with the conditions stated in this License.\r\n\r\n5.
+    Submission of Contributions. Unless You explicitly state otherwise, any Contribution
+    intentionally submitted for inclusion in the Work by You to the Licensor shall
+    be under the terms and conditions of this License, without any additional terms
+    or conditions. Notwithstanding the above, nothing herein shall supersede or modify
+    the terms of any separate license agreement you may have executed with Licensor
+    regarding such Contributions.\r\n\r\n6. Trademarks. This License does not grant
+    permission to use the trade names, trademarks, service marks, or product names
+    of the Licensor, except as required for reasonable and customary use in describing
+    the origin of the Work and reproducing the content of the NOTICE file.\r\n\r\n7.
+    Disclaimer of Warranty. Unless required by applicable law or agreed to in writing,
+    Licensor provides the Work (and each Contributor provides its Contributions) on
+    an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+    or implied, including, without limitation, any warranties or conditions of TITLE,
+    NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are
+    solely responsible for determining the appropriateness of using or redistributing
+    the Work and assume any risks associated with Your exercise of permissions under
+    this License.\r\n\r\n8. Limitation of Liability. In no event and under no legal
+    theory, whether in tort (including negligence), contract, or otherwise, unless
+    required by applicable law (such as deliberate and grossly negligent acts) or
+    agreed to in writing, shall any Contributor be liable to You for damages, including
+    any direct, indirect, special, incidental, or consequential damages of any character
+    arising as a result of this License or out of the use or inability to use the
+    Work (including but not limited to damages for loss of goodwill, work stoppage,
+    computer failure or malfunction, or any and all other commercial damages or losses),
+    even if such Contributor has been advised of the possibility of such damages.\r\n\r\n9.
+    Accepting Warranty or Additional Liability. While redistributing the Work or Derivative
+    Works thereof, You may choose to offer, and charge a fee for, acceptance of support,
+    warranty, indemnity, or other liability obligations and/or rights consistent with
+    this License. However, in accepting such obligations, You may act only on Your
+    own behalf and on Your sole responsibility, not on behalf of any other Contributor,
+    and only if You agree to indemnify, defend, and hold each Contributor harmless
+    for any liability incurred by, or claims asserted against, such Contributor by
+    reason of your accepting any such warranty or additional liability.\r\n\r\nEND
+    OF TERMS AND CONDITIONS\r\n=========================================\r\nEND OF
+    typescript NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% underscore NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nCopyright
+    (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative\r\nReporters &
+    Editors\r\n\r\nPermission is hereby granted, free of charge, to any person\r\nobtaining
+    a copy of this software and associated documentation\r\nfiles (the \"Software\"),
+    to deal in the Software without\r\nrestriction, including without limitation the
+    rights to use,\r\ncopy, modify, merge, publish, distribute, sublicense, and/or
+    sell\r\ncopies of the Software, and to permit persons to whom the\r\nSoftware
+    is furnished to do so, subject to the following\r\nconditions:\r\n\r\nThe above
+    copyright notice and this permission notice shall be\r\nincluded in all copies
+    or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS
+    IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES\r\nOF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\nNONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT\r\nHOLDERS BE LIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY,\r\nWHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+    ARISING\r\nFROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR\r\nOTHER
+    DEALINGS IN THE SOFTWARE.\r\n=========================================\r\nEND
+    OF underscore NOTICES, INFORMATION, AND LICENSE\r\n\r\n%% wrappy NOTICES, INFORMATION,
+    AND LICENSE BEGIN HERE\r\n=========================================\r\nThe ISC
+    License\r\n\r\nCopyright (c) Isaac Z. Schlueter and Contributors\r\n\r\nPermission
+    to use, copy, modify, and/or distribute this software for any\r\npurpose with
+    or without fee is hereby granted, provided that the above\r\ncopyright notice
+    and this permission notice appear in all copies.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\r\nWITH REGARD TO THIS SOFTWARE
+    INCLUDING ALL IMPLIED WARRANTIES OF\r\nMERCHANTABILITY AND FITNESS. IN NO EVENT
+    SHALL THE AUTHOR BE LIABLE FOR\r\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+    DAMAGES OR ANY DAMAGES\r\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+    WHETHER IN AN\r\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+    OUT OF OR\r\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\r\n=========================================\r\nEND
+    OF wrappy NOTICES, INFORMATION, AND LICENSE"
