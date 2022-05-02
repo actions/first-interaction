@@ -12,3 +12,5 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+- name: First interaction
+  uses: actions/first-interaction@v1.1.0
