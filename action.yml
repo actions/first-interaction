@@ -6,9 +6,9 @@ inputs:
     description: 'Token for the repository. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
   issue-message:
-    description: 'Comment to post on an individual''s first issue'
+    description: 'Welcome your issue.'
   pr-message:
-    description: 'Comment to post on an individual''s first pull request'
+    description: 'Welcome your first pull request.'
 runs:
   using: 'docker'
   image: 'Dockerfile'
