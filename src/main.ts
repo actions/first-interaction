@@ -11,7 +11,7 @@ async function run() {
       );
     }
     // Get client and context
-    const client: github.GitHub = new github.GitHub(
+    const client = github.getOctokit(
       core.getInput('repo-token', {required: true})
     );
     const context = github.context;
@@ -71,14 +71,14 @@ async function run() {
     // Add a comment to the appropriate place
     console.log(`Adding message: ${message} to ${issueType} ${issue.number}`);
     if (isIssue) {
-      await client.issues.createComment({
+      await client.rest.issues.createComment({
         owner: issue.owner,
         repo: issue.repo,
         issue_number: issue.number,
         body: message
       });
     } else {
-      await client.pulls.createReview({
+      await client.rest.pulls.createReview({
         owner: issue.owner,
         repo: issue.repo,
         pull_number: issue.number,
@@ -87,19 +87,19 @@ async function run() {
       });
     }
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed((error as any).message);
     return;
   }
 }
 
 async function isFirstIssue(
-  client: github.GitHub,
+  client: ReturnType<typeof github.getOctokit>,
   owner: string,
   repo: string,
   sender: string,
   curIssueNumber: number
 ): Promise<boolean> {
-  const {status, data: issues} = await client.issues.listForRepo({
+  const {status, data: issues} = await client.rest.issues.listForRepo({
     owner: owner,
     repo: repo,
     creator: sender,
@@ -125,7 +125,7 @@ async function isFirstIssue(
 
 // No way to filter pulls by creator
 async function isFirstPull(
-  client: github.GitHub,
+  client: ReturnType<typeof github.getOctokit>,
   owner: string,
   repo: string,
   sender: string,
@@ -134,7 +134,7 @@ async function isFirstPull(
 ): Promise<boolean> {
   // Provide console output if we loop for a while.
   console.log('Checking...');
-  const {status, data: pulls} = await client.pulls.list({
+  const {status, data: pulls} = await client.rest.pulls.list({
     owner: owner,
     repo: repo,
     per_page: 100,
@@ -151,7 +151,7 @@ async function isFirstPull(
   }
 
   for (const pull of pulls) {
-    const login: string = pull.user.login;
+    const login = pull.user?.login;
     if (login === sender && pull.number < curPullNumber) {
       return false;
     }
