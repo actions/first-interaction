@@ -30,7 +30,8 @@
     "@actions/exec": "file:toolkit/actions-exec-1.1.1.tgz",
     "@actions/github": "file:toolkit/actions-github-5.1.1.tgz",
     "@actions/io": "file:toolkit/actions-io-1.1.2.tgz",
-    "@actions/tool-cache": "file:toolkit/actions-tool-cache-2.0.1.tgz"
+    "@actions/tool-cache": "file:toolkit/actions-tool-cache-2.0.1.tgz",
+    "@octokit/rest": "file:toolkit/octokit-rest.js-20.0.2.tgz"
   },
   "devDependencies": {
     "@types/jest": "^24.0.13",
