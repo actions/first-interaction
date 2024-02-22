@@ -29053,6 +29053,7 @@ async function isFirstIssue(client, owner, repo, issueNumber, actor) {
         repo,
         actor
     });
+    core.debug(JSON.stringify(response));
     // The GraphQL API differentiates between issues and pull requests, so the
     // response should include a single issue (the one that triggered this action)
     // if it's the actor's first issue.
@@ -29098,7 +29099,7 @@ async function isFirstPullRequest(client, owner, repo, pullNumber, actor, cursor
         repo,
         cursor
     });
-    core.info(JSON.stringify(response));
+    core.debug(JSON.stringify(response));
     // The GraphQL API doesn't support filtering PRs by creator. The response may
     // contain many PRs. This is the actor's first PR if there is only with their
     // handle as the creator (the one that triggered this action).
