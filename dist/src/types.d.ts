@@ -30,4 +30,3 @@ export type PullRequestsGraphQLResponse = {
         };
     };
 };
-//# sourceMappingURL=types.d.ts.map

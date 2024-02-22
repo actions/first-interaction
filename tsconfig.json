@@ -3,7 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "declaration": true,
-    "declarationMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["ES2022"],

@@ -28,4 +28,3 @@ export declare function isFirstIssue(client: ReturnType<typeof github.getOctokit
  * @returns Resolves to `true` if this is the first PR the actor has opened.
  */
 export declare function isFirstPullRequest(client: ReturnType<typeof github.getOctokit>, owner: string, repo: string, pullNumber: number, actor: string, cursor?: string | null): Promise<boolean>;
-//# sourceMappingURL=main.d.ts.map
