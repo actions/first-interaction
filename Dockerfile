@@ -1,4 +1,4 @@
-FROM node:14.4.0-buster-slim
+FROM node:20.10-buster-slim
 
 COPY . .
 
