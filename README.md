@@ -7,7 +7,7 @@
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
 
 An action for responding to pull requests and issues from first-time
-contributors.
+contributors. afeafea
 
 ## Usage
 
