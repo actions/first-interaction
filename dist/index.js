@@ -29098,6 +29098,7 @@ async function isFirstPullRequest(client, owner, repo, pullNumber, actor, cursor
         repo,
         cursor
     });
+    core.info(JSON.stringify(response));
     // The GraphQL API doesn't support filtering PRs by creator. The response may
     // contain many PRs. This is the actor's first PR if there is only with their
     // handle as the creator (the one that triggered this action).
