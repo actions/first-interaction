@@ -1,28 +1,35 @@
-name: first-interaction
+name: First Interaction
 
 on:
   issues:
-    types: [opened]
+    types:
+      - opened
   pull_request:
-    branches: [main]
-    types: [opened]
+    branches:
+      - main
+    types:
+      - opened
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
-  check_for_first_interaction:
+  first-interaction:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/first-interaction@main
+      - name: Comment on New Issues and PRs
+        id: first-interaction
+        uses: ncalteen/first-interaction@main
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
-            Hello! Thank you for filing an issue.
+            Thank you for filing your first issue in this repository!
 
             If this is a bug report, please include relevant logs to help us debug the problem.
           pr-message: |
-            Hello! Thank you for your contribution.
-            
+            Thank you for your first contribution in this repository!
+
             If you are fixing a bug, please reference the issue number in the description.
 
             If you are implementing a feature request, please check with the maintainers that the feature will be accepted first.
-            

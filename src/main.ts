@@ -1,170 +1,211 @@
-import * as core from '@actions/core';
-import * as github from '@actions/github';
+import * as core from '@actions/core'
+import * as github from '@actions/github'
+import type { WebhookPayload } from '@actions/github/lib/interfaces'
+import type {
+  IssuesGraphQLResponse,
+  PullRequestsGraphQLResponse
+} from './types'
+import { EventName } from './enums'
 
-async function run() {
-  try {
-    const issueMessage: string = core.getInput('issue-message');
-    const prMessage: string = core.getInput('pr-message');
-    if (!issueMessage && !prMessage) {
-      throw new Error(
-        'Action must have at least one of issue-message or pr-message set'
-      );
-    }
-    // Get client and context
-    const client = github.getOctokit(
-      core.getInput('repo-token', {required: true})
-    );
-    const context = github.context;
+/**
+ * The main function for the action.
+ *
+ * @returns {Promise<void>} Resolves when the action is complete.
+ */
+export async function run(): Promise<void> {
+  const issueMessage: string = core.getInput('issue-message')
+  const prMessage: string = core.getInput('pr-message')
 
-    if (context.payload.action !== 'opened') {
-      console.log('No issue or PR was opened, skipping');
-      return;
-    }
+  const token: string = core.getInput('github-token', { required: true })
+  const octokit: ReturnType<typeof github.getOctokit> = github.getOctokit(token)
 
-    // Do nothing if its not a pr or issue
-    const isIssue: boolean = !!context.payload.issue;
-    if (!isIssue && !context.payload.pull_request) {
-      console.log(
-        'The event that triggered this action was not a pull request or issue, skipping.'
-      );
-      return;
-    }
+  // Only 'issues' and 'pull_request' events are supported.
+  if (
+    github.context.eventName !== 'issues' &&
+    github.context.eventName !== 'pull_request'
+  )
+    return core.setFailed(
+      `Only '${EventName.Issues}' and '${EventName.PullRequest}' events are supported (received: '${github.context.eventName}')`
+    )
 
-    // Do nothing if its not their first contribution
-    console.log('Checking if its the users first contribution');
-    if (!context.payload.sender) {
-      throw new Error('Internal error, no sender provided by GitHub');
-    }
-    const sender: string = context.payload.sender!.login;
-    const issue: {owner: string; repo: string; number: number} = context.issue;
-    let firstContribution: boolean = false;
-    if (isIssue) {
-      firstContribution = await isFirstIssue(
-        client,
-        issue.owner,
-        issue.repo,
-        sender,
-        issue.number
-      );
-    } else {
-      firstContribution = await isFirstPull(
-        client,
-        issue.owner,
-        issue.repo,
-        sender,
-        issue.number
-      );
-    }
-    if (!firstContribution) {
-      console.log('Not the users first contribution');
-      return;
-    }
+  // Only 'opened' event types are supported.
+  if (github.context.payload.action !== 'opened')
+    return core.setFailed(
+      `Only 'opened' event types are supported (received '${github.context.payload.action}')`
+    )
 
-    // Do nothing if no message set for this type of contribution
-    const message: string = isIssue ? issueMessage : prMessage;
-    if (!message) {
-      console.log('No message provided for this type of contribution');
-      return;
-    }
+  // Get the context information.
+  const actor: string = github.context.actor
+  const eventName: EventName = github.context.eventName as EventName
+  const payload: WebhookPayload | undefined = github.context.payload
+  const issue: { owner: string; repo: string; number: number } =
+    github.context.issue
 
-    const issueType: string = isIssue ? 'issue' : 'pull request';
-    // Add a comment to the appropriate place
-    console.log(`Adding message: ${message} to ${issueType} ${issue.number}`);
-    if (isIssue) {
-      await client.rest.issues.createComment({
-        owner: issue.owner,
-        repo: issue.repo,
-        issue_number: issue.number,
-        body: message
-      });
-    } else {
-      await client.rest.pulls.createReview({
-        owner: issue.owner,
-        repo: issue.repo,
-        pull_number: issue.number,
-        body: message,
-        event: 'COMMENT'
-      });
-    }
-  } catch (error) {
-    core.setFailed((error as any).message);
-    return;
-  }
+  // Event payload is required.
+  if (
+    (eventName === EventName.Issues && !payload.issue) ||
+    (eventName === EventName.PullRequest && !payload.pull_request)
+  )
+    return core.setFailed(`Missing payload for '${eventName}' event.`)
+
+  // Message is required.
+  if (
+    (eventName === EventName.Issues && !issueMessage) ||
+    (eventName === EventName.PullRequest && !prMessage)
+  )
+    return core.setFailed(
+      `No message provided for '${eventName}' contributions.`
+    )
+
+  core.info(`Checking if this is ${actor}'s first contribution.`)
+
+  const isFirstContribution: boolean =
+    eventName === EventName.Issues
+      ? await isFirstIssue(
+          octokit,
+          issue.owner,
+          issue.repo,
+          issue.number,
+          actor
+        )
+      : await isFirstPullRequest(
+          octokit,
+          issue.owner,
+          issue.repo,
+          issue.number,
+          actor
+        )
+
+  if (!isFirstContribution)
+    return core.info(`This is not ${actor}'s first contribution.`)
+
+  core.info(`Adding message to #${issue.number}.`)
+  await octokit.rest.issues.createComment({
+    owner: issue.owner,
+    repo: issue.repo,
+    issue_number: issue.number,
+    body: eventName === EventName.Issues ? issueMessage : prMessage
+  })
 }
 
-async function isFirstIssue(
+/**
+ * Returns `true` if this is the first issue the actor has opened.
+ *
+ * @param client The authenticated Octokit client.
+ * @param owner The repository owner.
+ * @param repo The repository name.
+ * @param issueNumber The issue number.
+ * @param actor The actor's username.
+ * @returns Resolves to `true` if this is the first issue the actor has opened.
+ */
+export async function isFirstIssue(
   client: ReturnType<typeof github.getOctokit>,
   owner: string,
   repo: string,
-  sender: string,
-  curIssueNumber: number
+  issueNumber: number,
+  actor: string
 ): Promise<boolean> {
-  const {status, data: issues} = await client.rest.issues.listForRepo({
-    owner: owner,
-    repo: repo,
-    creator: sender,
-    state: 'all'
-  });
-
-  if (status !== 200) {
-    throw new Error(`Received unexpected API status code ${status}`);
-  }
-
-  if (issues.length === 0) {
-    return true;
-  }
-
-  for (const issue of issues) {
-    if (issue.number < curIssueNumber && !issue.pull_request) {
-      return false;
+  const response: IssuesGraphQLResponse = await client.graphql(
+    `
+      query($owner: String!, $repo: String!, $actor: String!) {
+        repository(owner: $owner, name: $repo) {
+          issues(
+            first: 5,
+            filterBy: { createdBy: $actor },
+            states: [ CLOSED, OPEN ]
+          ) {
+            nodes {
+              number
+            }
+          }
+        }
+      }
+    `,
+    {
+      owner,
+      repo,
+      actor
     }
-  }
+  )
 
-  return true;
+  // The GraphQL API differentiates between issues and pull requests, so the
+  // response should include a single issue (the one that triggered this action)
+  // if it's the actor's first issue.
+  return (
+    response.data.repository.issues.nodes.length === 1 &&
+    response.data.repository.issues.nodes[0].number === issueNumber
+  )
 }
 
-// No way to filter pulls by creator
-async function isFirstPull(
+/**
+ * Returns `true` if this is the first pull request the actor has opened.
+ *
+ * @param client The authenticated Octokit client.
+ * @param owner The repository owner.
+ * @param repo The repository name.
+ * @param pullNumber The pull request number.
+ * @param actor The actor's username.
+ * @param cursor The cursor to use for pagination.
+ * @returns Resolves to `true` if this is the first PR the actor has opened.
+ */
+export async function isFirstPullRequest(
   client: ReturnType<typeof github.getOctokit>,
   owner: string,
   repo: string,
-  sender: string,
-  curPullNumber: number,
-  page: number = 1
+  pullNumber: number,
+  actor: string,
+  cursor: string | null = null
 ): Promise<boolean> {
-  // Provide console output if we loop for a while.
-  console.log('Checking...');
-  const {status, data: pulls} = await client.rest.pulls.list({
-    owner: owner,
-    repo: repo,
-    per_page: 100,
-    page: page,
-    state: 'all'
-  });
-
-  if (status !== 200) {
-    throw new Error(`Received unexpected API status code ${status}`);
-  }
-
-  if (pulls.length === 0) {
-    return true;
-  }
-
-  for (const pull of pulls) {
-    const login = pull.user?.login;
-    if (login === sender && pull.number < curPullNumber) {
-      return false;
+  const response: PullRequestsGraphQLResponse = await client.graphql(
+    `
+      query($owner: String!, $repo: String!, $cursor: String) {
+        repository(owner: $owner, name: $repo) {
+          pullRequests(
+            first: 50,
+            after: $cursor,
+            states: [ CLOSED, MERGED, OPEN ]
+          ) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              number
+              author {
+                login
+              }
+            }
+          }
+        }
+      }
+    `,
+    {
+      owner,
+      repo,
+      cursor
     }
-  }
+  )
 
-  return await isFirstPull(
-    client,
-    owner,
-    repo,
-    sender,
-    curPullNumber,
-    page + 1
-  );
+  // The GraphQL API doesn't support filtering PRs by creator. The response may
+  // contain many PRs. This is the actor's first PR if there is only with their
+  // handle as the creator (the one that triggered this action).
+
+  // Iterate over the current page of PRs, checking for any with a matching
+  // creator but not a matching number.
+  for (const pull of response.data.repository.pullRequests.nodes)
+    if (pull.author.login === actor && pull.number !== pullNumber) return false
+
+  // If there is another page of PRs to check, do so.
+  if (response.data.repository.pullRequests.pageInfo.hasNextPage)
+    return await isFirstPullRequest(
+      client,
+      owner,
+      repo,
+      pullNumber,
+      actor,
+      response.data.repository.pullRequests.pageInfo.endCursor
+    )
+
+  // If there are no more pages to check, this is the actor's first PR.
+  return true
 }
-
-run();
