@@ -1,0 +1,55 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  actions: read
+  checks: write
+  contents: read
+
+jobs:
+  continuous-integration:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        id: install
+        run: npm ci
+
+      - name: Check Format
+        id: format-check
+        run: npm run format:check
+
+      - name: Lint
+        id: lint
+        run: npm run lint
+
+      - name: Test
+        id: test
+        run: npm run ci-test
+
+      - name: Report Tests
+        id: report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Report
+          path: reports/jest-*.xml
+          reporter: jest-junit
