@@ -20,12 +20,6 @@
     "strict": true,
     "target": "ES2022"
   },
-  "include": [
-    "__fixtures__",
-    "__mocks__",
-    "__tests__",
-    "src",
-    "jest.config.ts"
-  ],
+  "include": ["src"],
   "exclude": ["coverage", "dist", "node_modules"]
 }
