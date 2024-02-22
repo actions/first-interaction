@@ -43,11 +43,12 @@ jobs:
           issue-message: |
             Hello! Thank you for filing an issue.
 
-            If this is a bug report, please include relevant logs to help us debug the problem.
+            If this is a bug report, please include any relevant logs.
           pr-message: |
             Hello! Thank you for your contribution.
 
-            If you are fixing a bug, please reference the issue number in the description.
+            If you are fixing a bug, please reference the issue number.
 
-            If you are implementing a feature request, please check with the maintainers that the feature will be accepted first.
+            If you are implementing a feature request, please check with the
+            maintainers that the feature will be accepted first.
 ```
