@@ -7,12 +7,24 @@ on:
     branches: [main]
     types: [opened]
 
+permissions:
+  contents: read
+
 jobs:
   check_for_first_interaction:
+    permissions:
+      contents: read  # for actions/checkout to fetch code
+      issues: write  # for actions/first-interaction to comment on first issue
+      pull-requests: write  # for actions/first-interaction to comment on first PR
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/first-interaction@main
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+      - uses: actions/first-interaction@41ddf9c83167223a120a277ed96cc1ad9f56dc0b # main
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
