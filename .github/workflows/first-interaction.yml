@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Comment on New Issues and PRs
         id: first-interaction
-        uses: actions/first-interaction@v2
+        uses: ncalteen/first-interaction@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
