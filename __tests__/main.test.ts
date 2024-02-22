@@ -101,15 +101,13 @@ describe('First Interaction', () => {
 
     it('Adds a comment to the first interaction', async () => {
       mocktokit.graphql.mockReturnValueOnce({
-        data: {
-          repository: {
-            issues: {
-              nodes: [
-                {
-                  number: 1
-                }
-              ]
-            }
+        repository: {
+          issues: {
+            nodes: [
+              {
+                number: 1
+              }
+            ]
           }
         }
       })
@@ -126,18 +124,16 @@ describe('First Interaction', () => {
 
     it('Does not add a comment if there are multiple interactions', async () => {
       mocktokit.graphql.mockReturnValueOnce({
-        data: {
-          repository: {
-            issues: {
-              nodes: [
-                {
-                  number: 1
-                },
-                {
-                  number: 2
-                }
-              ]
-            }
+        repository: {
+          issues: {
+            nodes: [
+              {
+                number: 1
+              },
+              {
+                number: 2
+              }
+            ]
           }
         }
       })
@@ -197,28 +193,26 @@ describe('First Interaction', () => {
 
     it('Adds a comment to the first interaction', async () => {
       mocktokit.graphql.mockReturnValueOnce({
-        data: {
-          repository: {
-            pullRequests: {
-              pageInfo: {
-                hasNextPage: false,
-                endCursor: null
-              },
-              nodes: [
-                {
-                  number: 1,
-                  author: {
-                    login: 'mona'
-                  }
-                },
-                {
-                  number: 2,
-                  author: {
-                    login: 'not-mona'
-                  }
+        repository: {
+          pullRequests: {
+            pageInfo: {
+              hasNextPage: false,
+              endCursor: null
+            },
+            nodes: [
+              {
+                number: 1,
+                author: {
+                  login: 'mona'
                 }
-              ]
-            }
+              },
+              {
+                number: 2,
+                author: {
+                  login: 'not-mona'
+                }
+              }
+            ]
           }
         }
       })
@@ -236,48 +230,44 @@ describe('First Interaction', () => {
     it('Does not add a comment if there are multiple interactions', async () => {
       mocktokit.graphql
         .mockReturnValueOnce({
-          data: {
-            repository: {
-              pullRequests: {
-                pageInfo: {
-                  hasNextPage: true,
-                  endCursor: 'my-cursor'
-                },
-                nodes: [
-                  {
-                    number: 1,
-                    author: {
-                      login: 'mona'
-                    }
-                  },
-                  {
-                    number: 2,
-                    author: {
-                      login: 'not-mona'
-                    }
+          repository: {
+            pullRequests: {
+              pageInfo: {
+                hasNextPage: true,
+                endCursor: 'my-cursor'
+              },
+              nodes: [
+                {
+                  number: 1,
+                  author: {
+                    login: 'mona'
                   }
-                ]
-              }
+                },
+                {
+                  number: 2,
+                  author: {
+                    login: 'not-mona'
+                  }
+                }
+              ]
             }
           }
         })
         .mockReturnValueOnce({
-          data: {
-            repository: {
-              pullRequests: {
-                pageInfo: {
-                  hasNextPage: false,
-                  endCursor: null
-                },
-                nodes: [
-                  {
-                    number: 3,
-                    author: {
-                      login: 'mona'
-                    }
+          repository: {
+            pullRequests: {
+              pageInfo: {
+                hasNextPage: false,
+                endCursor: null
+              },
+              nodes: [
+                {
+                  number: 3,
+                  author: {
+                    login: 'mona'
                   }
-                ]
-              }
+                }
+              ]
             }
           }
         })

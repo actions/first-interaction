@@ -29056,8 +29056,8 @@ async function isFirstIssue(client, owner, repo, issueNumber, actor) {
     // The GraphQL API differentiates between issues and pull requests, so the
     // response should include a single issue (the one that triggered this action)
     // if it's the actor's first issue.
-    return (response.data.repository.issues.nodes.length === 1 &&
-        response.data.repository.issues.nodes[0].number === issueNumber);
+    return (response.repository.issues.nodes.length === 1 &&
+        response.repository.issues.nodes[0].number === issueNumber);
 }
 exports.isFirstIssue = isFirstIssue;
 /**
@@ -29104,12 +29104,12 @@ async function isFirstPullRequest(client, owner, repo, pullNumber, actor, cursor
     // handle as the creator (the one that triggered this action).
     // Iterate over the current page of PRs, checking for any with a matching
     // creator but not a matching number.
-    for (const pull of response.data.repository.pullRequests.nodes)
+    for (const pull of response.repository.pullRequests.nodes)
         if (pull.author.login === actor && pull.number !== pullNumber)
             return false;
     // If there is another page of PRs to check, do so.
-    if (response.data.repository.pullRequests.pageInfo.hasNextPage)
-        return await isFirstPullRequest(client, owner, repo, pullNumber, actor, response.data.repository.pullRequests.pageInfo.endCursor);
+    if (response.repository.pullRequests.pageInfo.hasNextPage)
+        return await isFirstPullRequest(client, owner, repo, pullNumber, actor, response.repository.pullRequests.pageInfo.endCursor);
     // If there are no more pages to check, this is the actor's first PR.
     return true;
 }
