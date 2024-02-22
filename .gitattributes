@@ -1,1 +1,3 @@
-.licenses/** -diff linguist-generated=true
+* text=auto eol=lf
+
+dist/** -diff linguist-generated=true
