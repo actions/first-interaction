@@ -9,6 +9,15 @@
 An action for responding to pull requests and issues from first-time
 contributors.
 
+## v2 Breaking Changes
+
+The release of `v2.0.0` of this action includes several significant changes.
+These are meant to bring this action to a more consistent standard.
+
+- The `repo-token` input has been renamed to `github-token`
+- The action no longer runs in a container (this should result in reduced
+  duration)
+
 ## Usage
 
 See [`action.yml`](./action.yml) for additional information.
