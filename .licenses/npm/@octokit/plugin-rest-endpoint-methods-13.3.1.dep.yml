@@ -1,9 +1,9 @@
 ---
-name: "@octokit/plugin-paginate-rest"
-version: 9.1.4
+name: "@octokit/plugin-rest-endpoint-methods"
+version: 13.3.1
 type: npm
-summary: Octokit plugin to paginate REST API endpoint responses
-homepage: 
+summary: Octokit plugin adding one method for all of api.github.com REST API endpoints
+homepage:
 license: mit
 licenses:
 - sources: LICENSE

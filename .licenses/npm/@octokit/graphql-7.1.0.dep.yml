@@ -1,16 +1,16 @@
 ---
-name: "@octokit/request-error"
-version: 5.0.1
+name: "@octokit/graphql"
+version: 7.1.0
 type: npm
-summary: Error class for Octokit request errors
-homepage: 
+summary: GitHub GraphQL API client for browsers and Node
+homepage:
 license: mit
 licenses:
 - sources: LICENSE
   text: |
     The MIT License
 
-    Copyright (c) 2019 Octokit contributors
+    Copyright (c) 2018 Octokit contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal

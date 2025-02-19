@@ -3,7 +3,7 @@ name: before-after-hook
 version: 2.2.3
 type: npm
 summary: asynchronous before/error/after hooks for internal functionality
-homepage: 
+homepage:
 license: apache-2.0
 licenses:
 - sources: LICENSE
