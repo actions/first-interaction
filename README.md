@@ -2,7 +2,7 @@
 
 An action for filtering pull requests and issues from first-time contributors.
 
-# Usage
+## Usage
 
 See [action.yml](action.yml)
 
@@ -18,10 +18,14 @@ jobs:
     - uses: actions/first-interaction@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        issue-message: 'Message that will be displayed on users first issue'
-        pr-message: 'Message that will be displayed on users first pr'
+        issue-message: |
+          # Message with markdown.
+          This is the message that will be displayed on users' first issue.
+        pr-message: |
+          Message that will be displayed on users' first pr.
+          Look, a `code block` for markdown.
 ```
 
-# License
+## License
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE)
