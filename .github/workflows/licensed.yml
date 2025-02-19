@@ -1,20 +1,73 @@
+# This workflow checks the statuses of cached dependencies used in this action
+# with the help of the Licensed tool. If any licenses are invalid or missing,
+# this workflow will fail. See: https://github.com/licensee/licensed
+
 name: Licensed
 
 on:
-  push: {branches: main}
-  pull_request: {branches: main}
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  test:
+  licensed:
+    name: Check Licenses
     runs-on: ubuntu-latest
-    name: Check licenses
+
     steps:
-      - uses: actions/checkout@v2
-      - run: npm install
-      - name: Install licensed
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        id: npm-ci
+        run: npm ci
+
+      - name: Setup Ruby
+        id: setup-ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby
+
+      - name: Setup Licensed
+        id: setup-licensed
+        uses: licensee/setup-licensed@v1.3.2
+        with:
+          version: 4.x
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      # If this is a workflow_dispatch event, update the cached licenses.
+      - if: ${{ github.event_name == 'workflow_dispatch' }}
+        name: Update Licenses
+        id: update-licenses
+        run: licensed cache
+
+      # Then, commit the updated licenses to the repository.
+      - if: ${{ github.event_name == 'workflow_dispatch' }}
+        name: Commit Licenses
+        id: commit-licenses
         run: |
-          cd $RUNNER_TEMP
-          curl -Lfs -o licensed.tar.gz https://github.com/github/licensed/releases/download/2.12.2/licensed-2.12.2-linux-x64.tar.gz
-          sudo tar -xzf licensed.tar.gz
-          sudo mv licensed /usr/local/bin/licensed
-      - run: licensed status
+          git config --local user.email "licensed-ci@users.noreply.github.com"
+          git config --local user.name "licensed-ci"
+          git add .
+          git commit -m "Auto-update license files"
+          git push
+
+      # Last, check the status of the cached licenses.
+      - name: Check Licenses
+        id: check-licenses
+        run: licensed status

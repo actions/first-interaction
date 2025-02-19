@@ -1,170 +1,111 @@
-import * as core from '@actions/core';
-import * as github from '@actions/github';
+import * as core from '@actions/core'
+import * as github from '@actions/github'
+import { Octokit } from '@octokit/rest'
 
-async function run() {
+export async function run() {
+  core.info('Running actions/first-interaction!')
+
+  // Skip if this is not an issue or PR event.
+  if (
+    github.context.eventName !== 'issues' &&
+    github.context.eventName !== 'pull_request'
+  )
+    return core.info('Skipping...Not an Issue/PR Event')
+
+  // Skip if this is not an issue/PR open event.
+  if (github.context.action !== 'opened')
+    return core.info('Skipping...Not an Opened Event')
+
+  // Confirm the sender data is present.
+  if (!github.context.payload.sender)
+    return core.setFailed('Internal Error...No Sender Provided by GitHub')
+
+  // Check if this is an issue or PR event.
+  const isIssue = github.context.payload.issue !== undefined
+  const isPullRequest = github.context.payload.pull_request !== undefined
+
+  // Confirm that only one of the two is present.
+  if (!isIssue && !isPullRequest)
+    return core.setFailed('Internal Error...No Issue or PR Provided by GitHub')
+  if (isIssue && isPullRequest)
+    return core.setFailed(
+      'Internal Error...Both Issue and PR Provided by GitHub'
+    )
+
+  // Get the action inputs.
+  const issueMessage: string = core.getInput('issue_message', {
+    required: true
+  })
+  const prMessage: string = core.getInput('pr_message', { required: true })
+
+  const octokit = new Octokit({
+    auth: core.getInput('repo_token', { required: true })
+  })
+
+  // Check if this is the user's first contribution.
+  if (!(await isFirstIssue(octokit)) && !(await isFirstPullRequest(octokit)))
+    return core.info('Skipping...Not First Contribution')
+
+  core.info(`Adding Message to #${github.context.issue.number}`)
+
+  await octokit.rest.issues.createComment({
+    owner: github.context.repo.owner,
+    repo: github.context.repo.repo,
+    issue_number: github.context.issue.number,
+    body: isIssue ? issueMessage : prMessage
+  })
+}
+
+/**
+ * Checks if this is the user's first issue.
+ *
+ * @param octokit Octokit instance
+ * @returns true if this is the user's first issue
+ */
+export async function isFirstIssue(octokit: Octokit): Promise<boolean> {
   try {
-    const issueMessage: string = core.getInput('issue-message');
-    const prMessage: string = core.getInput('pr-message');
-    if (!issueMessage && !prMessage) {
-      throw new Error(
-        'Action must have at least one of issue-message or pr-message set'
-      );
-    }
-    // Get client and context
-    const client = github.getOctokit(
-      core.getInput('repo-token', {required: true})
-    );
-    const context = github.context;
+    const issues = await octokit.paginate(octokit.rest.issues.listForRepo, {
+      owner: github.context.repo.owner,
+      repo: github.context.repo.repo,
+      creator: github.context.payload.sender!.login,
+      state: 'all'
+    })
 
-    if (context.payload.action !== 'opened') {
-      console.log('No issue or PR was opened, skipping');
-      return;
-    }
-
-    // Do nothing if its not a pr or issue
-    const isIssue: boolean = !!context.payload.issue;
-    if (!isIssue && !context.payload.pull_request) {
-      console.log(
-        'The event that triggered this action was not a pull request or issue, skipping.'
-      );
-      return;
-    }
-
-    // Do nothing if its not their first contribution
-    console.log('Checking if its the users first contribution');
-    if (!context.payload.sender) {
-      throw new Error('Internal error, no sender provided by GitHub');
-    }
-    const sender: string = context.payload.sender!.login;
-    const issue: {owner: string; repo: string; number: number} = context.issue;
-    let firstContribution: boolean = false;
-    if (isIssue) {
-      firstContribution = await isFirstIssue(
-        client,
-        issue.owner,
-        issue.repo,
-        sender,
-        issue.number
-      );
-    } else {
-      firstContribution = await isFirstPull(
-        client,
-        issue.owner,
-        issue.repo,
-        sender,
-        issue.number
-      );
-    }
-    if (!firstContribution) {
-      console.log('Not the users first contribution');
-      return;
-    }
-
-    // Do nothing if no message set for this type of contribution
-    const message: string = isIssue ? issueMessage : prMessage;
-    if (!message) {
-      console.log('No message provided for this type of contribution');
-      return;
-    }
-
-    const issueType: string = isIssue ? 'issue' : 'pull request';
-    // Add a comment to the appropriate place
-    console.log(`Adding message: ${message} to ${issueType} ${issue.number}`);
-    if (isIssue) {
-      await client.rest.issues.createComment({
-        owner: issue.owner,
-        repo: issue.repo,
-        issue_number: issue.number,
-        body: message
-      });
-    } else {
-      await client.rest.pulls.createReview({
-        owner: issue.owner,
-        repo: issue.repo,
-        pull_number: issue.number,
-        body: message,
-        event: 'COMMENT'
-      });
-    }
+    return (
+      issues
+        // Filter out PRs.
+        .filter((issue) => issue.pull_request === undefined)
+        // Filter out any issue that are newer than the current issue.
+        .filter((issue) => issue.number < github.context.issue.number)
+        .length === 0
+    )
   } catch (error) {
-    core.setFailed((error as any).message);
-    return;
+    core.setFailed((error as any).message)
+    return false
   }
 }
 
-async function isFirstIssue(
-  client: ReturnType<typeof github.getOctokit>,
-  owner: string,
-  repo: string,
-  sender: string,
-  curIssueNumber: number
-): Promise<boolean> {
-  const {status, data: issues} = await client.rest.issues.listForRepo({
-    owner: owner,
-    repo: repo,
-    creator: sender,
-    state: 'all'
-  });
+/**
+ * Checks if this is the user's first pull request.
+ *
+ * @param octokit Octokit instance
+ * @returns true if this is the user's first pull request
+ */
+export async function isFirstPullRequest(octokit: Octokit): Promise<boolean> {
+  try {
+    const pulls = await octokit.paginate(octokit.rest.pulls.list, {
+      owner: github.context.repo.owner,
+      repo: github.context.repo.repo,
+      state: 'all'
+    })
 
-  if (status !== 200) {
-    throw new Error(`Received unexpected API status code ${status}`);
+    return (
+      // Filter out any PRs that are newer than the current one.
+      pulls.filter((pull) => pull.number < github.context.issue.number)
+        .length === 0
+    )
+  } catch (error) {
+    core.setFailed((error as any).message)
+    return false
   }
-
-  if (issues.length === 0) {
-    return true;
-  }
-
-  for (const issue of issues) {
-    if (issue.number < curIssueNumber && !issue.pull_request) {
-      return false;
-    }
-  }
-
-  return true;
 }
-
-// No way to filter pulls by creator
-async function isFirstPull(
-  client: ReturnType<typeof github.getOctokit>,
-  owner: string,
-  repo: string,
-  sender: string,
-  curPullNumber: number,
-  page: number = 1
-): Promise<boolean> {
-  // Provide console output if we loop for a while.
-  console.log('Checking...');
-  const {status, data: pulls} = await client.rest.pulls.list({
-    owner: owner,
-    repo: repo,
-    per_page: 100,
-    page: page,
-    state: 'all'
-  });
-
-  if (status !== 200) {
-    throw new Error(`Received unexpected API status code ${status}`);
-  }
-
-  if (pulls.length === 0) {
-    return true;
-  }
-
-  for (const pull of pulls) {
-    const login = pull.user?.login;
-    if (login === sender && pull.number < curPullNumber) {
-      return false;
-    }
-  }
-
-  return await isFirstPull(
-    client,
-    owner,
-    repo,
-    sender,
-    curPullNumber,
-    page + 1
-  );
-}
-
-run();

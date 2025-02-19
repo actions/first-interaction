@@ -1,15 +1,17 @@
-name: 'First interaction'
-description: 'Greet new contributors when they create their first issue or open their first pull request'
-author: 'GitHub'
+name: First Interaction
+description: Greet first-time contributors when they open an issue or PR
+author: GitHub
+
 inputs:
-  repo-token:
-    description: 'Token for the repository. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
+  issue_message:
+    description: Comment to post on an individual's first issue
+  pr_message:
+    description: Comment to post on an individual's first pull request
+  repo_token:
+    description: Token with permissions to post issue and PR comments
     required: true
-  issue-message:
-    description: 'Comment to post on an individual''s first issue'
-  pr-message:
-    description: 'Comment to post on an individual''s first pull request'
+    default: ${{ github.token }}
+
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  
+  using: node20
+  main: dist/index.js
