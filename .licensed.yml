@@ -1,3 +1,5 @@
+# See: https://github.com/licensee/licensed/blob/main/docs/configuration.md
+
 sources:
   npm: true
 
@@ -8,9 +10,9 @@ allowed:
   - isc
   - mit
   - cc0-1.0
-  - unlicense
-  - 0bsd
+  - other
 
-reviewed:
+ignored:
   npm:
-  - sax
+    # Used by Rollup.js when building in GitHub Actions
+    - '@rollup/rollup-linux-x64-gnu'
