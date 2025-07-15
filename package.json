@@ -47,7 +47,7 @@
     "@eslint/compat": "^1.2.6",
     "@github/local-action": "^2.6.2",
     "@jest/globals": "^29.7.0",
-    "@octokit/types": "^13.8.0",
+    "@octokit/types": "^14.1.0",
     "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-typescript": "^12.1.2",
