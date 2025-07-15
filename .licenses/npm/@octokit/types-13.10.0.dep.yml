@@ -1,6 +1,6 @@
 ---
 name: "@octokit/types"
-version: 13.8.0
+version: 13.10.0
 type: npm
 summary: Shared TypeScript definitions for Octokit projects
 homepage:
