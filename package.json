@@ -52,10 +52,10 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.16.5",
-    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@types/node": "^22.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
     "@typescript-eslint/parser": "^8.24.1",
-    "eslint": "^9.31.0",
+    "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
@@ -65,11 +65,11 @@
     "make-coverage-badge": "^1.2.0",
     "prettier": "^3.6.2",
     "prettier-eslint": "^16.4.2",
-    "rollup": "^4.45.1",
-    "ts-jest": "^29.4.0",
+    "rollup": "^4.46.2",
+    "ts-jest": "^29.4.1",
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "*"
