@@ -1,8 +1,8 @@
 ---
-name: "@octokit/request-error"
-version: 6.1.7
+name: "@octokit/auth-token"
+version: 6.0.0
 type: npm
-summary: Error class for Octokit request errors
+summary: GitHub API token authentication for browsers and Node.js
 homepage:
 license: mit
 licenses:

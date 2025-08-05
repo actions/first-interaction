@@ -1,6 +1,6 @@
 ---
 name: "@octokit/rest"
-version: 21.1.1
+version: 22.0.0
 type: npm
 summary: GitHub REST API client for Node.js
 homepage:
