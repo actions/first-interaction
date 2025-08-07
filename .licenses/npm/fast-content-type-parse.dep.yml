@@ -1,6 +1,6 @@
 ---
 name: fast-content-type-parse
-version: 2.0.1
+version: 3.0.0
 type: npm
 summary: Parse HTTP Content-Type header according to RFC 7231
 homepage: https://github.com/fastify/fast-content-type-parse#readme
