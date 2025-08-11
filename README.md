@@ -48,8 +48,8 @@ jobs:
     steps:
       - uses: actions/first-interaction@v3
         with:
-          repo_token: ${{ github.token }}
-          issue_message: |
+          repo-token: ${{ github.token }}
+          issue-message: |
             # Issue Message with Markdown
 
             This is the message that will be displayed!
