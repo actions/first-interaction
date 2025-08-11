@@ -9,6 +9,11 @@
 An action for filtering pull requests (PRs) and issues from first-time
 contributors.
 
+## Breaking Changes in v3.0.0
+
+Version 3.0.0 introduces breaking changes:
+- If you're using a self-hosted runner, ensure it's on version on [v2.327.1](https://github.com/actions/runner/releases/tag/v2.327.1) or later
+
 When a first-time contributor opens a PR or issue, this action will add a
 comment to the PR or issue with a message of your choice. This action is useful
 for welcoming first-time contributors to your project and providing them with
@@ -39,13 +44,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/first-interaction@vX.Y.Z # Set this to the latest release
+      - uses: actions/first-interaction@v3
         with:
-          issue-message: |
+          repo_token: ${{ github.token }}
+          issue_message: |
             # Issue Message with Markdown
 
             This is the message that will be displayed!
-          pr-message: |
+          pr_message: |
             # PR Message with Markdown
 
             This is the message that will be displayed!

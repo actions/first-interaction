@@ -1,7 +1,7 @@
 {
   "name": "first-interaction-action",
   "description": "An action for greeting first time contributors.",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "GitHub",
   "type": "module",
   "private": true,
