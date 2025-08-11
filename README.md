@@ -12,7 +12,9 @@ contributors.
 ## Breaking Changes in v3.0.0
 
 Version 3.0.0 introduces breaking changes:
-- If you're using a self-hosted runner, ensure it's on version on [v2.327.1](https://github.com/actions/runner/releases/tag/v2.327.1) or later
+
+- If you're using a self-hosted runner, ensure it's on version on
+  [v2.327.1](https://github.com/actions/runner/releases/tag/v2.327.1) or later
 
 When a first-time contributor opens a PR or issue, this action will add a
 comment to the PR or issue with a message of your choice. This action is useful
