@@ -34825,9 +34825,11 @@ const Octokit = Octokit$1.plugin(requestLog, legacyRestEndpointMethods, paginate
 
 async function run() {
     coreExports.info('Running actions/first-interaction!');
+    // Check if this is an issue or PR event.
+    const isIssue = githubExports.context.payload.issue !== undefined;
+    const isPullRequest = githubExports.context.payload.pull_request !== undefined;
     // Skip if this is not an issue or PR event.
-    if (githubExports.context.eventName !== 'issues' &&
-        githubExports.context.eventName !== 'pull_request')
+    if (!isIssue && !isPullRequest)
         return coreExports.info('Skipping...Not an Issue/PR Event');
     // Skip if this is not an issue/PR open event.
     if (githubExports.context.action !== 'opened')
@@ -34835,12 +34837,7 @@ async function run() {
     // Confirm the sender data is present.
     if (!githubExports.context.payload.sender)
         return coreExports.setFailed('Internal Error...No Sender Provided by GitHub');
-    // Check if this is an issue or PR event.
-    const isIssue = githubExports.context.payload.issue !== undefined;
-    const isPullRequest = githubExports.context.payload.pull_request !== undefined;
     // Confirm that only one of the two is present.
-    if (!isIssue && !isPullRequest)
-        return coreExports.setFailed('Internal Error...No Issue or PR Provided by GitHub');
     if (isIssue && isPullRequest)
         return coreExports.setFailed('Internal Error...Both Issue and PR Provided by GitHub');
     // Get the action inputs.
