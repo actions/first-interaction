@@ -5,11 +5,12 @@ import { Octokit } from '@octokit/rest'
 export async function run() {
   core.info('Running actions/first-interaction!')
 
+  // Check if this is an issue or PR event.
+  const isIssue = github.context.payload.issue !== undefined
+  const isPullRequest = github.context.payload.pull_request !== undefined
+
   // Skip if this is not an issue or PR event.
-  if (
-    github.context.eventName !== 'issues' &&
-    github.context.eventName !== 'pull_request'
-  )
+  if (!isIssue && !isPullRequest)
     return core.info('Skipping...Not an Issue/PR Event')
 
   // Skip if this is not an issue/PR open event.
@@ -20,13 +21,7 @@ export async function run() {
   if (!github.context.payload.sender)
     return core.setFailed('Internal Error...No Sender Provided by GitHub')
 
-  // Check if this is an issue or PR event.
-  const isIssue = github.context.payload.issue !== undefined
-  const isPullRequest = github.context.payload.pull_request !== undefined
-
   // Confirm that only one of the two is present.
-  if (!isIssue && !isPullRequest)
-    return core.setFailed('Internal Error...No Issue or PR Provided by GitHub')
   if (isIssue && isPullRequest)
     return core.setFailed(
       'Internal Error...Both Issue and PR Provided by GitHub'

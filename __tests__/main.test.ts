@@ -49,6 +49,7 @@ describe('main.ts', () => {
   describe('run()', () => {
     it('Skips invalid events', async () => {
       github.context.eventName = 'push'
+      github.context.payload = {} as any
 
       await main.run()
 
@@ -70,17 +71,6 @@ describe('main.ts', () => {
 
       expect(core.setFailed).toHaveBeenCalledWith(
         'Internal Error...No Sender Provided by GitHub'
-      )
-    })
-
-    it('Fails if neither PR nor issue are provided', async () => {
-      github.context.payload.issue = undefined as any
-      github.context.payload.pull_request = undefined as any
-
-      await main.run()
-
-      expect(core.setFailed).toHaveBeenCalledWith(
-        'Internal Error...No Issue or PR Provided by GitHub'
       )
     })
 
