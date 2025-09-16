@@ -8,6 +8,7 @@ export const context = {
     number: 10
   },
   payload: {
+    action: 'opened',
     number: 10,
     issue: {
       number: 10
@@ -19,7 +20,6 @@ export const context = {
       login: 'mona'
     }
   },
-  action: 'opened',
   repo: {
     owner: 'actions',
     repo: 'first-interaction'

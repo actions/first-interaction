@@ -14,7 +14,7 @@ export async function run() {
     return core.info('Skipping...Not an Issue/PR Event')
 
   // Skip if this is not an issue/PR open event.
-  if (github.context.action !== 'opened')
+  if (github.context.payload.action !== 'opened')
     return core.info('Skipping...Not an Opened Event')
 
   // Confirm the sender data is present.

@@ -34832,7 +34832,7 @@ async function run() {
     if (!isIssue && !isPullRequest)
         return coreExports.info('Skipping...Not an Issue/PR Event');
     // Skip if this is not an issue/PR open event.
-    if (githubExports.context.action !== 'opened')
+    if (githubExports.context.payload.action !== 'opened')
         return coreExports.info('Skipping...Not an Opened Event');
     // Confirm the sender data is present.
     if (!githubExports.context.payload.sender)

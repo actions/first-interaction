@@ -30,7 +30,7 @@ describe('main.ts', () => {
   beforeEach(() => {
     // "Reset" the github context.
     github.context.eventName = 'pull_request'
-    github.context.action = 'opened'
+    github.context.payload.action = 'opened'
     github.context.payload.issue = undefined as any
     github.context.payload.pull_request = {
       number: 10
@@ -57,7 +57,7 @@ describe('main.ts', () => {
     })
 
     it('Skips invalid actions', async () => {
-      github.context.action = 'edited'
+      github.context.payload.action = 'edited'
 
       await main.run()
 
