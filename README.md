@@ -48,11 +48,11 @@ jobs:
     steps:
       - uses: actions/first-interaction@v3
         with:
-          issue-message: |
+          issue_message: |
             # Issue Message with Markdown
 
             This is the message that will be displayed!
-          pr-message: |
+          pr_message: |
             # PR Message with Markdown
 
             This is the message that will be displayed!
