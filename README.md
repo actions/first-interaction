@@ -1,7 +1,7 @@
 # First Interaction
 
 [![Super-Linter](https://github.com/actions/first-interaction/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
-![CI](https://github.com/actions/first-interaction/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/actions/first-interaction/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/actions/first-interaction/actions/workflows/continuous-integration.yml)
 [![Check dist/](https://github.com/actions/first-interaction/actions/workflows/check-dist.yml/badge.svg)](https://github.com/actions/first-interaction/actions/workflows/check-dist.yml)
 [![CodeQL](https://github.com/actions/first-interaction/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/actions/first-interaction/actions/workflows/codeql-analysis.yml)
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
