@@ -28,3 +28,4 @@ updates:
         dependency-type: production
         update-types:
           - patch
+          - minor
