@@ -57,4 +57,4 @@ jobs:
           VALIDATE_JAVASCRIPT_ES: false
           VALIDATE_JSCPD: false
           VALIDATE_TYPESCRIPT_ES: false
-          VALIDATE_JSON: false
+          VALIDATE_JSON: true
