@@ -89,19 +89,14 @@ describe('main.ts', () => {
       )
     })
 
-    it('Skips adding a message if this is not the first contribution', async () => {
+    it('Skips adding a message if this is not the first PR', async () => {
       mocktokit.paginate
-        // Issues
-        .mockResolvedValueOnce([
-          {
-            number: 10
-          },
-          {
-            number: 5
-          }
-        ])
         // PRs
         .mockResolvedValueOnce([
+          {
+            number: 10,
+            user: { login: 'mona' }
+          },
           {
             number: 3,
             user: { login: 'mona' }
@@ -111,12 +106,12 @@ describe('main.ts', () => {
       await main.run()
 
       expect(core.info).toHaveBeenCalledWith(
-        'Skipping...Not First Contribution'
+        'Skipping...Not First Pull Request'
       )
       expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
     })
 
-    it('Adds an issue message if this is the first contribution', async () => {
+    it('Skips adding a message if this is not the first issue', async () => {
       github.context.payload.issue = {
         number: 10
       }
@@ -127,26 +122,45 @@ describe('main.ts', () => {
         .mockResolvedValueOnce([
           {
             number: 10
+          },
+          {
+            number: 5
           }
         ])
-        // PRs
-        .mockResolvedValueOnce([])
+
+      await main.run()
+
+      expect(core.info).toHaveBeenCalledWith('Skipping...Not First Issue')
+      expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
+    })
+
+    it('Adds an issue message if this is the first issue', async () => {
+      github.context.payload.issue = {
+        number: 10
+      }
+      github.context.payload.pull_request = undefined as any
+
+      mocktokit.paginate
+        // Issues - only the current issue exists
+        .mockResolvedValueOnce([
+          {
+            number: 10
+          }
+        ])
 
       await main.run()
 
       expect(mocktokit.rest.issues.createComment).toHaveBeenCalled()
     })
 
-    it('Adds a PR message if this is the first contribution', async () => {
+    it('Adds a PR message if this is the first PR', async () => {
       github.context.payload.issue = undefined as any
       github.context.payload.pull_request = {
         number: 10
       }
 
       mocktokit.paginate
-        // Issues
-        .mockResolvedValueOnce([])
-        // PRs
+        // PRs - only the current PR exists
         .mockResolvedValueOnce([
           {
             number: 10,

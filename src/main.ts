@@ -37,9 +37,11 @@ export async function run() {
     auth: core.getInput('repo_token', { required: true })
   })
 
-  // Check if this is the user's first contribution.
-  if (!(await isFirstIssue(octokit)) && !(await isFirstPullRequest(octokit)))
-    return core.info('Skipping...Not First Contribution')
+  // Check if this is the user's first contribution of the relevant type.
+  if (isIssue && !(await isFirstIssue(octokit)))
+    return core.info('Skipping...Not First Issue')
+  if (isPullRequest && !(await isFirstPullRequest(octokit)))
+    return core.info('Skipping...Not First Pull Request')
 
   core.info(`Adding Message to #${github.context.issue.number}`)
 
