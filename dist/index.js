@@ -34905,10 +34905,12 @@ async function isFirstPullRequest(octokit) {
             repo: githubExports.context.repo.repo,
             state: 'all'
         });
-        return (
-        // Filter out any PRs that are newer than the current one.
-        pulls.filter((pull) => pull.number < githubExports.context.issue.number)
-            .length === 0);
+        return (pulls
+            // Filter to only the current user's PRs.
+            .filter((pull) => pull.user?.login === githubExports.context.payload.sender.login)
+            // Filter out any PRs that are newer than the current one.
+            .filter((pull) => pull.number < githubExports.context.issue.number).length ===
+            0);
     }
     catch (error) {
         coreExports.setFailed(error.message);

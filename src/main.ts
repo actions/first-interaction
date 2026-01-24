@@ -95,9 +95,14 @@ export async function isFirstPullRequest(octokit: Octokit): Promise<boolean> {
     })
 
     return (
-      // Filter out any PRs that are newer than the current one.
-      pulls.filter((pull) => pull.number < github.context.issue.number)
-        .length === 0
+      pulls
+        // Filter to only the current user's PRs.
+        .filter(
+          (pull) => pull.user?.login === github.context.payload.sender!.login
+        )
+        // Filter out any PRs that are newer than the current one.
+        .filter((pull) => pull.number < github.context.issue.number).length ===
+      0
     )
   } catch (error) {
     core.setFailed((error as any).message)

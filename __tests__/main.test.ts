@@ -103,7 +103,8 @@ describe('main.ts', () => {
         // PRs
         .mockResolvedValueOnce([
           {
-            number: 3
+            number: 3,
+            user: { login: 'mona' }
           }
         ])
 
@@ -148,7 +149,8 @@ describe('main.ts', () => {
         // PRs
         .mockResolvedValueOnce([
           {
-            number: 10
+            number: 10,
+            user: { login: 'mona' }
           }
         ])
 
@@ -243,7 +245,8 @@ describe('main.ts', () => {
     it('Returns true if only the current PR is present', async () => {
       mocktokit.paginate.mockResolvedValueOnce([
         {
-          number: 10
+          number: 10,
+          user: { login: 'mona' }
         }
       ])
 
@@ -255,10 +258,12 @@ describe('main.ts', () => {
     it('Returns false if older PRs are present', async () => {
       mocktokit.paginate.mockResolvedValueOnce([
         {
-          number: 10
+          number: 10,
+          user: { login: 'mona' }
         },
         {
-          number: 5
+          number: 5,
+          user: { login: 'mona' }
         }
       ])
 
@@ -267,20 +272,21 @@ describe('main.ts', () => {
       expect(result).toBe(false)
     })
 
-    it('Does not ignore pull requests', async () => {
+    it('Ignores pull requests from other users', async () => {
       mocktokit.paginate.mockResolvedValueOnce([
         {
-          number: 10
+          number: 10,
+          user: { login: 'mona' }
         },
         {
           number: 5,
-          pull_request: {}
+          user: { login: 'other-user' }
         }
       ])
 
       const result = await main.isFirstPullRequest(mocktokit)
 
-      expect(result).toBe(false)
+      expect(result).toBe(true)
     })
 
     it('Returns false if there is an error', async () => {
