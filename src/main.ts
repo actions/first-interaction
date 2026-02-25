@@ -27,12 +27,6 @@ export async function run() {
       'Internal Error...Both Issue and PR Provided by GitHub'
     )
 
-  // Get the action inputs.
-  const issueMessage: string = core.getInput('issue_message', {
-    required: true
-  })
-  const prMessage: string = core.getInput('pr_message', { required: true })
-
   const octokit = new Octokit({
     auth: core.getInput('repo_token', { required: true })
   })
@@ -47,7 +41,9 @@ export async function run() {
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     issue_number: github.context.issue.number,
-    body: isIssue ? issueMessage : prMessage
+    body: isIssue
+      ? core.getInput('issue_message', { required: true })
+      : core.getInput('pr_message', { required: true })
   })
 }
 
