@@ -40,10 +40,18 @@ describe('main.ts', () => {
     }
 
     // Set the action's inputs as return values from core.getInput().
-    core.getInput
-      .mockReturnValueOnce('ISSUE_MESSAGE')
-      .mockReturnValueOnce('PR_MESSAGE')
-      .mockReturnValueOnce('REPO_TOKEN')
+    core.getInput.mockImplementation((name: string) => {
+      switch (name) {
+        case 'repo_token':
+          return 'REPO_TOKEN'
+        case 'issue_message':
+          return 'ISSUE_MESSAGE'
+        case 'pr_message':
+          return 'PR_MESSAGE'
+        default:
+          return ''
+      }
+    })
   })
 
   describe('run()', () => {
@@ -133,7 +141,9 @@ describe('main.ts', () => {
 
       await main.run()
 
-      expect(mocktokit.rest.issues.createComment).toHaveBeenCalled()
+      expect(mocktokit.rest.issues.createComment).toHaveBeenCalledWith(
+        expect.objectContaining({ body: 'ISSUE_MESSAGE' })
+      )
     })
 
     it('Adds a PR message if this is the first contribution', async () => {
@@ -154,7 +164,57 @@ describe('main.ts', () => {
 
       await main.run()
 
-      expect(mocktokit.rest.issues.createComment).toHaveBeenCalled()
+      expect(mocktokit.rest.issues.createComment).toHaveBeenCalledWith(
+        expect.objectContaining({ body: 'PR_MESSAGE' })
+      )
+    })
+
+    it('Does not read issue_message when handling a PR', async () => {
+      github.context.payload.issue = undefined as any
+      github.context.payload.pull_request = {
+        number: 10
+      }
+
+      mocktokit.paginate
+        // Issues
+        .mockResolvedValueOnce([])
+        // PRs
+        .mockResolvedValueOnce([
+          {
+            number: 10
+          }
+        ])
+
+      await main.run()
+
+      expect(core.getInput).not.toHaveBeenCalledWith(
+        'issue_message',
+        expect.anything()
+      )
+    })
+
+    it('Does not read pr_message when handling an issue', async () => {
+      github.context.payload.issue = {
+        number: 10
+      }
+      github.context.payload.pull_request = undefined as any
+
+      mocktokit.paginate
+        // Issues
+        .mockResolvedValueOnce([
+          {
+            number: 10
+          }
+        ])
+        // PRs
+        .mockResolvedValueOnce([])
+
+      await main.run()
+
+      expect(core.getInput).not.toHaveBeenCalledWith(
+        'pr_message',
+        expect.anything()
+      )
     })
   })
 
