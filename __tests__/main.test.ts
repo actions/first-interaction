@@ -290,5 +290,39 @@ describe('main.ts', () => {
 
       expect(result).toBe(false)
     })
+
+    it('Skips if is issue and no issue_message is provided', async () => {
+      github.context.payload.issue = { number: 10 }
+      github.context.payload.pull_request = undefined as any
+
+      core.getInput
+        .mockReset()
+        .mockReturnValueOnce('')
+        .mockReturnValueOnce('PR_MESSAGE')
+
+      await main.run()
+
+      expect(core.info).toHaveBeenCalledWith(
+        'Skipping... No issue message configured'
+      )
+      expect(mocktokit.paginate).not.toHaveBeenCalled()
+    })
+
+    it('Skips if is PR and no pr_message is provided', async () => {
+      github.context.payload.issue = undefined as any
+      github.context.payload.pull_request = { number: 10 }
+
+      core.getInput
+        .mockReset()
+        .mockReturnValueOnce('ISSUE_MESSAGE')
+        .mockReturnValueOnce('')
+
+      await main.run()
+
+      expect(core.info).toHaveBeenCalledWith(
+        'Skipping... No PR message configured'
+      )
+      expect(mocktokit.paginate).not.toHaveBeenCalled()
+    })
   })
 })
