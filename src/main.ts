@@ -28,10 +28,13 @@ export async function run() {
     )
 
   // Get the action inputs.
-  const issueMessage: string = core.getInput('issue_message', {
-    required: true
-  })
-  const prMessage: string = core.getInput('pr_message', { required: true })
+  const issueMessage: string = core.getInput('issue_message')
+  if (isIssue && !issueMessage)
+    return core.info('Skipping... No issue message configured')
+
+  const prMessage: string = core.getInput('pr_message')
+  if (isPullRequest && !prMessage)
+    return core.info('Skipping... No PR message configured')
 
   const octokit = new Octokit({
     auth: core.getInput('repo_token', { required: true })
