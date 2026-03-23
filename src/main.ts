@@ -33,7 +33,7 @@ export async function run() {
     return core.info('Skipping... No issue message configured')
 
   const prMessage: string = core.getInput('pr_message')
-  if (!isIssue && !prMessage)
+  if (isPullRequest && !prMessage)
     return core.info('Skipping... No PR message configured')
 
   const octokit = new Octokit({
