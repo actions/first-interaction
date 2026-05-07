@@ -5,10 +5,14 @@ author: GitHub
 inputs:
   issue_message:
     description: Comment to post on an individual's first issue
+    required: true
   pr_message:
     description: Comment to post on an individual's first pull request
+    required: true
   repo_token:
-    description: Token with permissions to post issue and PR comments
+    description: >-
+      Token used to post comments. Requires `issues: write` and
+      `pull-requests: write` permissions.
     required: true
     default: ${{ github.token }}
 
