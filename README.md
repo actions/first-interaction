@@ -9,6 +9,7 @@
 An action for filtering pull requests (PRs) and issues from first-time
 contributors.
 
+
 ## Breaking Changes in v3.0.0
 
 Version 3.0.0 introduces breaking changes:
