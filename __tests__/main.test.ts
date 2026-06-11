@@ -22,6 +22,19 @@ const main = await import('../src/main.js')
 const { Octokit } = await import('@octokit/rest')
 const mocktokit = jest.mocked(new Octokit())
 
+// Mirrors @actions/core's getInput: returns '' for unset inputs, throws when
+// a required input is empty (checked against the raw value, so whitespace-only
+// passes the check just like in production), trims the returned value by
+// default, and honors `trimWhitespace: false` to return the raw value.
+function mockInputs(values: Record<string, string>): void {
+  core.getInput.mockImplementation((name, options) => {
+    const value = values[name] ?? ''
+    if (options?.required && !value)
+      throw new Error(`Input required and not supplied: ${name}`)
+    return options?.trimWhitespace === false ? value : value.trim()
+  })
+}
+
 describe('main.ts', () => {
   afterEach(() => {
     jest.resetAllMocks()
@@ -40,10 +53,11 @@ describe('main.ts', () => {
     }
 
     // Set the action's inputs as return values from core.getInput().
-    core.getInput
-      .mockReturnValueOnce('ISSUE_MESSAGE')
-      .mockReturnValueOnce('PR_MESSAGE')
-      .mockReturnValueOnce('REPO_TOKEN')
+    mockInputs({
+      issue_message: 'ISSUE_MESSAGE',
+      pr_message: 'PR_MESSAGE',
+      repo_token: 'REPO_TOKEN'
+    })
   })
 
   describe('run()', () => {
@@ -155,6 +169,82 @@ describe('main.ts', () => {
       await main.run()
 
       expect(mocktokit.rest.issues.createComment).toHaveBeenCalled()
+    })
+
+    it('Does not require pr_message on an issue event', async () => {
+      github.context.payload.issue = {
+        number: 10
+      }
+      github.context.payload.pull_request = undefined as any
+
+      mockInputs({
+        issue_message: 'ISSUE_MESSAGE',
+        repo_token: 'REPO_TOKEN'
+      })
+
+      mocktokit.paginate
+        // Issues
+        .mockResolvedValueOnce([{ number: 10 }])
+        // PRs
+        .mockResolvedValueOnce([])
+
+      await expect(main.run()).resolves.toBeUndefined()
+      expect(mocktokit.rest.issues.createComment).toHaveBeenCalled()
+    })
+
+    it('Does not require issue_message on a PR event', async () => {
+      github.context.payload.issue = undefined as any
+      github.context.payload.pull_request = {
+        number: 10
+      }
+
+      mockInputs({
+        pr_message: 'PR_MESSAGE',
+        repo_token: 'REPO_TOKEN'
+      })
+
+      mocktokit.paginate
+        // Issues
+        .mockResolvedValueOnce([])
+        // PRs
+        .mockResolvedValueOnce([{ number: 10 }])
+
+      await expect(main.run()).resolves.toBeUndefined()
+      expect(mocktokit.rest.issues.createComment).toHaveBeenCalled()
+    })
+
+    it('Fails if issue_message is missing on an issue event', async () => {
+      github.context.payload.issue = {
+        number: 10
+      }
+      github.context.payload.pull_request = undefined as any
+
+      mockInputs({
+        pr_message: 'PR_MESSAGE',
+        repo_token: 'REPO_TOKEN'
+      })
+
+      await expect(main.run()).rejects.toThrow(
+        'Input required and not supplied: issue_message'
+      )
+      expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
+    })
+
+    it('Fails if pr_message is missing on a PR event', async () => {
+      github.context.payload.issue = undefined as any
+      github.context.payload.pull_request = {
+        number: 10
+      }
+
+      mockInputs({
+        issue_message: 'ISSUE_MESSAGE',
+        repo_token: 'REPO_TOKEN'
+      })
+
+      await expect(main.run()).rejects.toThrow(
+        'Input required and not supplied: pr_message'
+      )
+      expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
     })
   })
 
