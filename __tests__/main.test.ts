@@ -89,7 +89,7 @@ describe('main.ts', () => {
       )
     })
 
-    it('Skips a message if the sender has prior issues and PRs', async () => {
+    it('Skips a PR message if the sender has prior PRs', async () => {
       mocktokit.paginate
         // Issues
         .mockResolvedValueOnce([
