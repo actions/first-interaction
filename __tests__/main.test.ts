@@ -121,21 +121,25 @@ describe('main.ts', () => {
       }
       github.context.payload.pull_request = undefined as any
 
-      mocktokit.paginate
-        // Issues
-        .mockResolvedValueOnce([
-          {
-            number: 10
-          },
-          {
-            number: 5
-          }
-        ])
-        // PRs
-        .mockResolvedValueOnce([])
+      mocktokit.paginate.mockResolvedValueOnce([
+        {
+          number: 10
+        },
+        {
+          number: 5
+        }
+      ])
 
       await main.run()
 
+      expect(mocktokit.paginate).toHaveBeenCalledTimes(1)
+      expect(mocktokit.paginate).toHaveBeenCalledWith(
+        mocktokit.rest.issues.listForRepo,
+        expect.objectContaining({
+          creator: github.context.payload.sender!.login,
+          state: 'all'
+        })
+      )
       expect(core.info).toHaveBeenCalledWith(
         'Skipping...Not First Contribution'
       )
