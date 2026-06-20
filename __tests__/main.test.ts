@@ -89,7 +89,7 @@ describe('main.ts', () => {
       )
     })
 
-    it('Skips adding a message if this is not the first contribution', async () => {
+    it('Skips a PR message if the sender has prior PRs', async () => {
       mocktokit.paginate
         // Issues
         .mockResolvedValueOnce([
@@ -109,6 +109,67 @@ describe('main.ts', () => {
 
       await main.run()
 
+      expect(core.info).toHaveBeenCalledWith(
+        'Skipping...Not First Contribution'
+      )
+      expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
+    })
+
+    it('Skips an issue message if the sender has prior issues but no PRs', async () => {
+      github.context.payload.issue = {
+        number: 10
+      }
+      github.context.payload.pull_request = undefined as any
+
+      mocktokit.paginate.mockResolvedValueOnce([
+        {
+          number: 10
+        },
+        {
+          number: 5
+        }
+      ])
+
+      await main.run()
+
+      expect(mocktokit.paginate).toHaveBeenCalledTimes(1)
+      expect(mocktokit.paginate).toHaveBeenCalledWith(
+        mocktokit.rest.issues.listForRepo,
+        expect.objectContaining({
+          creator: github.context.payload.sender!.login,
+          state: 'all'
+        })
+      )
+      expect(core.info).toHaveBeenCalledWith(
+        'Skipping...Not First Contribution'
+      )
+      expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
+    })
+
+    it('Skips a PR message if the sender has prior PRs but no issues', async () => {
+      github.context.payload.issue = undefined as any
+      github.context.payload.pull_request = {
+        number: 10
+      }
+
+      mocktokit.paginate.mockResolvedValueOnce([
+        {
+          number: 10
+        },
+        {
+          number: 5
+        }
+      ])
+
+      await main.run()
+
+      expect(mocktokit.paginate).toHaveBeenCalledTimes(1)
+      expect(mocktokit.paginate).toHaveBeenCalledWith(
+        mocktokit.rest.pulls.list,
+        expect.objectContaining({
+          state: 'all'
+        })
+      )
       expect(core.info).toHaveBeenCalledWith(
         'Skipping...Not First Contribution'
       )
