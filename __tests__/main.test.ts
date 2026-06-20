@@ -89,7 +89,7 @@ describe('main.ts', () => {
       )
     })
 
-    it('Skips adding a message if this is not the first contribution', async () => {
+    it('Skips a message if the sender has prior issues and PRs', async () => {
       mocktokit.paginate
         // Issues
         .mockResolvedValueOnce([
@@ -106,6 +106,60 @@ describe('main.ts', () => {
             number: 3
           }
         ])
+
+      await main.run()
+
+      expect(core.info).toHaveBeenCalledWith(
+        'Skipping...Not First Contribution'
+      )
+      expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
+    })
+
+    it('Skips an issue message if the sender has prior issues but no PRs', async () => {
+      github.context.payload.issue = {
+        number: 10
+      }
+      github.context.payload.pull_request = undefined as any
+
+      mocktokit.paginate
+        // Issues
+        .mockResolvedValueOnce([
+          {
+            number: 10
+          },
+          {
+            number: 5
+          }
+        ])
+        // PRs
+        .mockResolvedValueOnce([])
+
+      await main.run()
+
+      expect(core.info).toHaveBeenCalledWith(
+        'Skipping...Not First Contribution'
+      )
+      expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
+    })
+
+    it('Skips a PR message if the sender has prior PRs but no issues', async () => {
+      github.context.payload.issue = undefined as any
+      github.context.payload.pull_request = {
+        number: 10
+      }
+
+      mocktokit.paginate
+        // PRs
+        .mockResolvedValueOnce([
+          {
+            number: 10
+          },
+          {
+            number: 5
+          }
+        ])
+        // Issues
+        .mockResolvedValueOnce([])
 
       await main.run()
 

@@ -34856,7 +34856,10 @@ async function run() {
         auth: coreExports.getInput('repo_token', { required: true })
     });
     // Check if this is the user's first contribution.
-    if (!(await isFirstIssue(octokit)) && !(await isFirstPullRequest(octokit)))
+    const isFirstContribution = isIssue
+        ? await isFirstIssue(octokit)
+        : await isFirstPullRequest(octokit);
+    if (!isFirstContribution)
         return coreExports.info('Skipping...Not First Contribution');
     coreExports.info(`Adding Message to #${githubExports.context.issue.number}`);
     await octokit.rest.issues.createComment({

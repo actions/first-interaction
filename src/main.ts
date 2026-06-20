@@ -38,7 +38,11 @@ export async function run() {
   })
 
   // Check if this is the user's first contribution.
-  if (!(await isFirstIssue(octokit)) && !(await isFirstPullRequest(octokit)))
+  const isFirstContribution = isIssue
+    ? await isFirstIssue(octokit)
+    : await isFirstPullRequest(octokit)
+
+  if (!isFirstContribution)
     return core.info('Skipping...Not First Contribution')
 
   core.info(`Adding Message to #${github.context.issue.number}`)
