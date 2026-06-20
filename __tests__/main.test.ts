@@ -152,21 +152,24 @@ describe('main.ts', () => {
         number: 10
       }
 
-      mocktokit.paginate
-        // PRs
-        .mockResolvedValueOnce([
-          {
-            number: 10
-          },
-          {
-            number: 5
-          }
-        ])
-        // Issues
-        .mockResolvedValueOnce([])
+      mocktokit.paginate.mockResolvedValueOnce([
+        {
+          number: 10
+        },
+        {
+          number: 5
+        }
+      ])
 
       await main.run()
 
+      expect(mocktokit.paginate).toHaveBeenCalledTimes(1)
+      expect(mocktokit.paginate).toHaveBeenCalledWith(
+        mocktokit.rest.pulls.list,
+        expect.objectContaining({
+          state: 'all'
+        })
+      )
       expect(core.info).toHaveBeenCalledWith(
         'Skipping...Not First Contribution'
       )
