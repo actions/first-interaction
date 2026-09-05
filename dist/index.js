@@ -34856,7 +34856,7 @@ async function run() {
         auth: coreExports.getInput('repo_token', { required: true })
     });
     // Check if this is the user's first contribution.
-    if (!(await isFirstIssue(octokit)) && !(await isFirstPullRequest(octokit)))
+    if (!((await isFirstIssue(octokit)) && (await isFirstPullRequest(octokit))))
         return coreExports.info('Skipping...Not First Contribution');
     coreExports.info(`Adding Message to #${githubExports.context.issue.number}`);
     await octokit.rest.issues.createComment({
@@ -34905,10 +34905,12 @@ async function isFirstPullRequest(octokit) {
             repo: githubExports.context.repo.repo,
             state: 'all'
         });
-        return (
-        // Filter out any PRs that are newer than the current one.
-        pulls.filter((pull) => pull.number < githubExports.context.issue.number)
-            .length === 0);
+        return (pulls
+            // Filter to only the current user's PRs.
+            .filter((pull) => pull.user?.login === githubExports.context.payload.sender.login)
+            // Filter out any PRs that are newer than the current one.
+            .filter((pull) => pull.number < githubExports.context.issue.number).length ===
+            0);
     }
     catch (error) {
         coreExports.setFailed(error.message);

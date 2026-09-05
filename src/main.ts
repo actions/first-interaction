@@ -38,7 +38,7 @@ export async function run() {
   })
 
   // Check if this is the user's first contribution.
-  if (!(await isFirstIssue(octokit)) && !(await isFirstPullRequest(octokit)))
+  if (!((await isFirstIssue(octokit)) && (await isFirstPullRequest(octokit))))
     return core.info('Skipping...Not First Contribution')
 
   core.info(`Adding Message to #${github.context.issue.number}`)
@@ -95,9 +95,14 @@ export async function isFirstPullRequest(octokit: Octokit): Promise<boolean> {
     })
 
     return (
-      // Filter out any PRs that are newer than the current one.
-      pulls.filter((pull) => pull.number < github.context.issue.number)
-        .length === 0
+      pulls
+        // Filter to only the current user's PRs.
+        .filter(
+          (pull) => pull.user?.login === github.context.payload.sender!.login
+        )
+        // Filter out any PRs that are newer than the current one.
+        .filter((pull) => pull.number < github.context.issue.number).length ===
+      0
     )
   } catch (error) {
     core.setFailed((error as any).message)
