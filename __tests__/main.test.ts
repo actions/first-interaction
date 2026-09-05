@@ -89,29 +89,7 @@ describe('main.ts', () => {
       )
     })
 
-    it('Skips adding a message if this is not the first PR', async () => {
-      mocktokit.paginate
-        // PRs
-        .mockResolvedValueOnce([
-          {
-            number: 10,
-            user: { login: 'mona' }
-          },
-          {
-            number: 3,
-            user: { login: 'mona' }
-          }
-        ])
-
-      await main.run()
-
-      expect(core.info).toHaveBeenCalledWith(
-        'Skipping...Not First Pull Request'
-      )
-      expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
-    })
-
-    it('Skips adding a message if this is not the first issue', async () => {
+    it('Skips adding a message if the sender has prior issues', async () => {
       github.context.payload.issue = {
         number: 10
       }
@@ -130,11 +108,59 @@ describe('main.ts', () => {
 
       await main.run()
 
-      expect(core.info).toHaveBeenCalledWith('Skipping...Not First Issue')
+      // The issue check fails first, so the PR check is never reached.
+      expect(mocktokit.paginate).toHaveBeenCalledTimes(1)
+      expect(core.info).toHaveBeenCalledWith(
+        'Skipping...Not First Contribution'
+      )
       expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
     })
 
-    it('Adds an issue message if this is the first issue', async () => {
+    it('Skips adding a message if the sender has prior pull requests', async () => {
+      mocktokit.paginate
+        // Issues
+        .mockResolvedValueOnce([])
+        // PRs
+        .mockResolvedValueOnce([
+          {
+            number: 10,
+            user: { login: 'mona' }
+          },
+          {
+            number: 3,
+            user: { login: 'mona' }
+          }
+        ])
+
+      await main.run()
+
+      expect(core.info).toHaveBeenCalledWith(
+        'Skipping...Not First Contribution'
+      )
+      expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
+    })
+
+    it('Skips a PR message if the sender has only prior issues', async () => {
+      mocktokit.paginate
+        // Issues
+        .mockResolvedValueOnce([
+          {
+            number: 5
+          }
+        ])
+
+      await main.run()
+
+      // A prior issue disqualifies a first pull request under any-contribution
+      // semantics, even though this is the sender's first PR.
+      expect(mocktokit.paginate).toHaveBeenCalledTimes(1)
+      expect(core.info).toHaveBeenCalledWith(
+        'Skipping...Not First Contribution'
+      )
+      expect(mocktokit.rest.issues.createComment).not.toHaveBeenCalled()
+    })
+
+    it("Adds an issue message if this is the sender's first contribution", async () => {
       github.context.payload.issue = {
         number: 10
       }
@@ -147,19 +173,18 @@ describe('main.ts', () => {
             number: 10
           }
         ])
+        // PRs
+        .mockResolvedValueOnce([])
 
       await main.run()
 
       expect(mocktokit.rest.issues.createComment).toHaveBeenCalled()
     })
 
-    it('Adds a PR message if this is the first PR', async () => {
-      github.context.payload.issue = undefined as any
-      github.context.payload.pull_request = {
-        number: 10
-      }
-
+    it("Adds a PR message if this is the sender's first contribution", async () => {
       mocktokit.paginate
+        // Issues
+        .mockResolvedValueOnce([])
         // PRs - only the current PR exists
         .mockResolvedValueOnce([
           {
